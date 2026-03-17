@@ -3,14 +3,14 @@
 use dioxus::prelude::*;
 use dioxus_bulma::prelude::*;
 
-use crate::components::common::Spacing;
+use crate::{components::common::Spacing, database::query};
 
 const SECTION_IMAGE_END: Asset = asset!("/assets/divider-flowers-leaves-optimized.webp");
 const SECTION_IMAGE_DIVIDER: Asset = asset!("/assets/divider-leaves-optimized.webp");
 const SECTION_IMAGE_START: Asset = asset!("/assets/floral-border-optimized.webp");
 
 #[component]
-pub(super) fn IntroduceSection() -> Element {
+pub(super) fn IntroduceSection(id: String) -> Element {
     rsx! {
         section {
             id: "introduce-section",
@@ -22,7 +22,7 @@ pub(super) fn IntroduceSection() -> Element {
             background_size: "initial",
 
             FloralBorderTop {  }
-            Message {  }
+            Message { id }
             Spacing { space: "40px" }
             Spacing { space: "40px" }
             BrideAndGroomItem {  }
@@ -47,16 +47,52 @@ fn FloralBorderTop() -> Element {
 }
 
 #[component]
-fn Message() -> Element {
+fn Message(id: String) -> Element {
+    let message = query(&id);
+
+    let lines = [
+        Some(&message.line1),
+        message.line2.as_ref(),
+        message.line3.as_ref(),
+        message.line4.as_ref(),
+        message.line5.as_ref(),
+    ]
+    .into_iter()
+    .flatten()
+    .collect::<Vec<_>>();
+
     rsx! {
         p {
             class: "welcome-text",
-            // Content
-            "My dearest friend"
-            br {  }
-            "The big day is officially happening, and you're one of the first people I wanted to tell."
-            br {  }
-            "Would be so happy to have you by my side."
+
+            for (i, line) in lines.iter().enumerate() {
+                "{line}"
+                if i < lines.len() - 1 {
+                    br { }
+                }
+            }
+            // // Content
+            // "{message.line1}"
+            // br { }
+            //
+            // {message.line2.as_ref().map(|line| rsx! {
+            //     "{line}"
+            //     br { }
+            // })}
+            //
+            // {message.line3.as_ref().map(|line| rsx! {
+            //     "{line}"
+            //     br { }
+            // })}
+            //
+            // {message.line4.as_ref().map(|line| rsx! {
+            //     "{line}"
+            //     br { }
+            // })}
+            //
+            // {message.line5.as_ref().map(|line| rsx! {
+            //     "{line}"
+            // })}
         }
     }
 }

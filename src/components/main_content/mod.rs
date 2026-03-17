@@ -8,12 +8,12 @@ mod time_section;
 mod location_section;
 
 #[component]
-pub fn MainContent() -> Element {
+pub fn MainContent(id: String) -> Element {
     rsx! {
         div {
             class: "main-content",
 
-            introduce_section::IntroduceSection {  }
+            introduce_section::IntroduceSection { id }
             time_section::TimeSection {  }
             location_section::LocationSection {  }
         }

@@ -21,6 +21,7 @@ fn Subtitle() -> Element {
     rsx! {
         h1 { 
             class: "subtitle",
+            font_size: "1.75rem",
             "Wedding Invitation" 
         }
     }

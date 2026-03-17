@@ -3,7 +3,7 @@
 [web.app]
 
 # HTML title tag content
-title = "You are invited | Hoang Kien & Pham Hang"
+title = "Wedding invitation | Hoang Kien & Pham Hang"
 
 # include `assets` in web platform
 [web.resource]

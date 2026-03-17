@@ -50,7 +50,7 @@ pub fn Invitation(id: String) -> Element {
             background_color: "ghostwhite",
 
             home::HeaderWrapper {  }
-            main_content::MainContent {  }
+            main_content::MainContent { id }
         }
     }
 }
