@@ -36,11 +36,10 @@ fn HeroFootWrapper() -> Element {
 fn NavigationList() -> Element {
     rsx! {
         ul { 
-            li { a { href: "#home", "Home" } }
+            li { a { href: "#intro", "Home" } }
             li { a { href: "#time", "Time" } }
             li { a { href: "#location", "Location" } }
-            // li { a { href: "#happy-hour", "Happy Hour" } }
-            li { a { href: "#rspv", "RSPV" } }
+            li { a { href: "#rsvp", "RSVP" } }
 
         }
     }

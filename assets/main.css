@@ -77,12 +77,6 @@ html {
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.082);
 }
 
-@media (max-width: 599px) {
-    .hero .hero-foot {
-        display: none;
-    }
-}
-
 .hero .hero-foot .hero-foot-wrapper {
     margin: 7px auto;
     height: 50px;
@@ -144,6 +138,12 @@ html {
     padding-bottom: 60px;
 }
 
+.main-content .section-default {
+    background-position: bottom -30px center;
+    background-repeat: no-repeat;
+    background-size: initial;
+}
+
 .main-content .divider {
     margin: 40px 25px;
     display: inline-block;
@@ -169,11 +169,11 @@ html {
     box-shadow: 0 5px 20px rgba(14, 25, 80, 0.3);
 }
 
-@media (max-width: 599px) {
-    .main-content .introduce-section .right-image img {
-        margin: auto;
-    }
-}
+/* @media (max-width: 599px) { */
+/*     .main-content .introduce-section .right-image img { */
+/*         margin: auto; */
+/*     } */
+/* } */
 
 .main-content .introduce-section .floral-border {
     margin: 25px;
@@ -251,10 +251,33 @@ html {
 
 .main-content .location-section .map-frame {
     padding: 0px;
+    padding-bottom: 60px;
+}
+
+.main-content .location-section .button {
+    background-color: #996E6D;
+    color: ghostwhite;
+    padding: 15px 30px;
 }
 
 /*------------------------------- END LOCATION SECTION ---------------------------------*/
 
+/*------------------------------- BEGIN RSVP SECTION ---------------------------------*/
+
+.main-content .rsvp-section {
+    padding: 80px 40px;
+    background-color: #F4E2E2;
+    font-size: 1.5rem;
+    font-family: 'Raleway', sans-serif;
+}
+
+.main-content .rsvp-section .message {
+    padding-bottom: 30px;
+    font-size: 1.2rem;
+}
+
+
+/*------------------------------- END RSVP SECTION ---------------------------------*/
 /*=============================== END MAIN CONTENT =================================*/
 
 .main-content .regular-section {
@@ -674,78 +697,6 @@ body.preloader-site {
 
 .tile {
     border-radius: 10px;
-}
-
-
-.foto1 {
-    background-image: linear-gradient(rgba(95, 2, 2, 0.5), rgba(48, 47, 47, 0.9)), url("../image/beatriz-perez-moya-M2T1j-6Fn8w-unsplash.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 24rem;
-}
-
-
-.foto2 {
-    background-image: linear-gradient(rgba(95, 2, 2, 0.5), rgba(48, 47, 47, 0.9)), url("../image/evelina-friman-hw_sKmjb0ns-unsplash.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 24rem;
-}
-
-.foto3 {
-    background-image: linear-gradient(rgba(95, 2, 2, 0.5), rgba(48, 47, 47, 0.9)), url("../image/jeremy-wong-weddings-464ps_nOflw-unsplash.jpg");
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    min-height: 24rem;
-}
-
-.foto4 {
-    background-image: linear-gradient(rgba(95, 2, 2, 0.5), rgba(48, 47, 47, 0.9)), url("../image/jeremy-wong-weddings-K8KiCHh4WU4-unsplash.jpg");
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    min-height: 24rem;
-}
-
-.foto5 {
-    background-image: linear-gradient(rgba(95, 2, 2, 0.5), rgba(48, 47, 47, 0.9)), url("../image/nathan-dumlao-5BB_atDT4oA-unsplash.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 24rem;
-}
-
-
-.foto6 {
-    background-image: linear-gradient(rgba(95, 2, 2, 0.5), rgba(48, 47, 47, 0.9)), url("../image/samantha-gades-x40Q9jrEVT0-unsplash.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 24rem;
-}
-
-
-
-.title-foto {
-    font-size: 18pt;
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    text-align: left;
-    color: white;
-}
-
-
-.subtitle-foto {
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    font-size: 14pt;
-    font-weight: 600;
-    margin-top: 15px;
-    text-align: left;
-    color: white;
 }
 
 .section-light {

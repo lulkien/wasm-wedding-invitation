@@ -3,17 +3,18 @@
 use dioxus::prelude::*;
 use dioxus_bulma::prelude::*;
 
-use crate::{components::common::Spacing, database::query};
+use crate::{
+    components::common::{DividerLeaves, Spacing, SECTION_IMAGE_END},
+    database::query,
+};
 
-const SECTION_IMAGE_END: Asset = asset!("/assets/divider-flowers-leaves-optimized.webp");
-const SECTION_IMAGE_DIVIDER: Asset = asset!("/assets/divider-leaves-optimized.webp");
 const SECTION_IMAGE_START: Asset = asset!("/assets/floral-border-optimized.webp");
 
 #[component]
 pub(super) fn IntroduceSection(id: String) -> Element {
     rsx! {
         section {
-            id: "introduce-section",
+            id: "intro",
             class: "section-default introduce-section no-padding-top has-text-centered has-vertically-aligned-content",
 
             background_image: "url({SECTION_IMAGE_END})",
@@ -119,19 +120,6 @@ fn BrideAndGroom(props: BrideAndGroomProps) -> Element {
         div {
             class: "bride-groom-name",
             "{props.name}"
-        }
-    }
-}
-
-#[component]
-fn DividerLeaves() -> Element {
-    rsx! {
-        div {
-            img {
-                class: "divider has-text-centered",
-                src: SECTION_IMAGE_DIVIDER,
-                alt: "~~~"
-            }
         }
     }
 }

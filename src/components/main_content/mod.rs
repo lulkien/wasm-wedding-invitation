@@ -6,6 +6,7 @@ use dioxus_bulma::prelude::*;
 mod introduce_section;
 mod time_section;
 mod location_section;
+mod rsvp_section;
 
 #[component]
 pub fn MainContent(id: String) -> Element {
@@ -16,6 +17,7 @@ pub fn MainContent(id: String) -> Element {
             introduce_section::IntroduceSection { id }
             time_section::TimeSection {  }
             location_section::LocationSection {  }
+            rsvp_section::RsvpSection {  }
         }
     }
 }

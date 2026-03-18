@@ -63,7 +63,7 @@ pub fn init_database() {
     let mut db = db.unwrap();
 
     db.insert(
-        "769a53cc00d572a3cf464127729421ff1afab1ca654ebf7cac6b9764c3077819".to_string(),
+        "769a53cc".to_string(),
         Message {
             line1: "Yo, my boiz Bach".to_string(),
             line2: Some("It's kinda weird to say, but well... I'm getting married!".to_string()),
@@ -73,7 +73,7 @@ pub fn init_database() {
     );
 
     db.insert(
-        "32985cff04093400e178df72d67bd21da6338aabc4be125e00205986c88836b1".to_string(),
+        "32985cff".to_string(),
         Message {
             line1: "Yo, my boiz Hoang,".to_string(),
             line2: Some("Guess what, I'm getting married after all...".to_string()),
@@ -83,7 +83,17 @@ pub fn init_database() {
     );
 
     db.insert(
-        "b814c110303b55d0733c971ff13462ebe29dbeb3632a98ea98920d220a3367a3".to_string(),
+        "48fa6f6c".to_string(),
+        Message {
+            line1: "Yo Hoang,".to_string(),
+            line2: Some("It's me! I'm getting married.".to_string()),
+            line3: Some("Hope you'll be there to celebrate with us.".to_string()),
+            ..Default::default()
+        },
+    );
+
+    db.insert(
+        "b814c11".to_string(),
         Message {
             line1: "Yo, Tuyet,".to_string(),
             line2: Some("I'm getting married! xD".to_string()),
