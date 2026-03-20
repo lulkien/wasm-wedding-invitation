@@ -5,13 +5,13 @@ use dioxus_bulma::prelude::*;
 
 use crate::{
     components::common::{DividerLeaves, Spacing, SECTION_IMAGE_END},
-    database::query,
+    database::Person,
 };
 
 const SECTION_IMAGE_START: Asset = asset!("/assets/floral-border-optimized.webp");
 
 #[component]
-pub(super) fn IntroduceSection(id: String) -> Element {
+pub(super) fn IntroduceSection(get_user_data: Signal<Person>) -> Element {
     rsx! {
         section {
             id: "intro",
@@ -23,7 +23,13 @@ pub(super) fn IntroduceSection(id: String) -> Element {
             background_size: "initial",
 
             FloralBorderTop {  }
-            Message { id }
+            Message {
+                greeting: get_user_data().greeting,
+                name: get_user_data().name,
+                line1: get_user_data().line1,
+                line2: get_user_data().line2,
+                line3: get_user_data().line3,
+            }
             Spacing { space: "40px" }
             Spacing { space: "40px" }
             BrideAndGroomItem {  }
@@ -47,16 +53,22 @@ fn FloralBorderTop() -> Element {
     }
 }
 
-#[component]
-fn Message(id: String) -> Element {
-    let message = query(&id);
+#[derive(Clone, Props, PartialEq)]
+pub struct MessageProps {
+    pub greeting: String,
+    pub name: String,
+    pub line1: String,
+    pub line2: Option<String>,
+    pub line3: Option<String>,
+}
 
+#[component]
+fn Message(props: MessageProps) -> Element {
     let lines = [
-        Some(&message.line1),
-        message.line2.as_ref(),
-        message.line3.as_ref(),
-        message.line4.as_ref(),
-        message.line5.as_ref(),
+        Some(format!("{} {}", props.greeting, props.name)),
+        Some(props.line1),
+        props.line2,
+        props.line3,
     ]
     .into_iter()
     .flatten()
@@ -72,28 +84,6 @@ fn Message(id: String) -> Element {
                     br { }
                 }
             }
-            // // Content
-            // "{message.line1}"
-            // br { }
-            //
-            // {message.line2.as_ref().map(|line| rsx! {
-            //     "{line}"
-            //     br { }
-            // })}
-            //
-            // {message.line3.as_ref().map(|line| rsx! {
-            //     "{line}"
-            //     br { }
-            // })}
-            //
-            // {message.line4.as_ref().map(|line| rsx! {
-            //     "{line}"
-            //     br { }
-            // })}
-            //
-            // {message.line5.as_ref().map(|line| rsx! {
-            //     "{line}"
-            // })}
         }
     }
 }

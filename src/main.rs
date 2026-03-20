@@ -1,16 +1,16 @@
 #![allow(unused)]
 
-use dioxus::prelude::*;
+use dioxus::{logger::{self, tracing::Level}, prelude::*};
 use dioxus_bulma::prelude::*;
 
-use crate::{database::init_database, pages::FrontPage};
+use crate::pages::FrontPage;
 
 mod components;
-mod pages;
 mod database;
+mod pages;
 
 fn main() {
-    init_database();
+    logger::init(Level::INFO).expect("Can't init dioxus logger");
     dioxus::launch(App);
 }
 

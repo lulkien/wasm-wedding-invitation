@@ -1,105 +1,117 @@
 use std::{
-    collections::HashMap,
-    sync::{OnceLock, RwLock, RwLockReadGuard, RwLockWriteGuard},
+    collections::HashMap, fmt::Display, sync::{OnceLock, RwLock, RwLockReadGuard, RwLockWriteGuard}
 };
 
-#[derive(Clone, Default, PartialEq)]
-pub struct Message {
-    pub line1: String,
-    pub line2: Option<String>,
-    pub line3: Option<String>,
-    pub line4: Option<String>,
-    pub line5: Option<String>,
+use dioxus::{fullstack::FromResponse, prelude::{info, warn}};
+use rusqlite::{Connection, Result, params};
+use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Default, PartialEq, Deserialize, Serialize)]
+pub enum DepartLocation {
+    #[default]
+    None = 0,
+    Fpt = 1,
+    Lotte = 2,
 }
 
-impl Message {
-    fn default_message() -> Message {
-        Message { 
-            line1: "My dearest friend".to_string(),
-            line2: Some("The big day is officially happening, and you're one of the first people I wanted to tell.".to_string()),
-            line3: Some("Would be so happy to have you by my side.".to_string()),
-            ..Message::default()
+impl Display for DepartLocation {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            DepartLocation::None => write!(f, "I'll pass"),
+            DepartLocation::Fpt => write!(f, "I wanna depart from FPT Tower"),
+            DepartLocation::Lotte => write!(f, "I wanna depart from Lotte"),
         }
     }
 }
 
-pub type Database = HashMap<String, Message>;
-
-static DB: OnceLock<RwLock<Database>> = OnceLock::new();
-
-fn database_writer() -> Option<RwLockWriteGuard<'static, Database>> {
-    DB.get_or_init(|| RwLock::new(Database::new()))
-        .write()
-        .map_err(|poison| poison.into_inner())
-        .ok()
+impl TryFrom<i32> for DepartLocation {
+    type Error = ();
+    fn try_from(value: i32) -> Result<Self, Self::Error> {
+        match value {
+            0 => Ok(Self::None),
+            1 => Ok(Self::Fpt),
+            2 => Ok(Self::Lotte),
+            _ => Err(())
+        }
+    }
 }
 
-fn database_reader() -> Option<RwLockReadGuard<'static, Database>> {
-    DB.get_or_init(|| RwLock::new(Database::new()))
-        .read()
-        .map_err(|poison| poison.into_inner())
-        .ok()
+
+#[derive(Clone, Default, PartialEq, Deserialize, Serialize)]
+pub struct Person {
+    pub uid: String,
+    pub name: String,
+    pub greeting: String,
+    pub line1: String,
+    pub line2: Option<String>,
+    pub line3: Option<String>,
+    pub depart_from: DepartLocation,
 }
 
-pub fn query(id: &str) -> Message {
-    let db = database_reader();
+impl Person {
+    pub fn with_default_message() -> Person {
+        Person { 
+            greeting: "My dearest friend".to_string(),
+            line1: "The big day is officially happening, and you're one of the first people I wanted to tell.".to_string(),
+            line2: Some("Would be so happy to have you by my side.".to_string()),
+            ..Person::default()
+        }
+    }
+}
 
-    if db.is_none() {
-        return Message::default_message();
+
+
+pub fn query_user(uid: &str) -> Person {
+    info!("Query user: {}", uid);
+
+    let conn = Connection::open(
+        "/home/kiewn/working/wasm-wedding-invitation/database.db");
+
+    if let Err(e) = conn {
+        warn!("Database connection error: {e}");
+        return Person::with_default_message();
     }
 
-    let db = db.unwrap();
+    let query_cmd =
+        "SELECT
+            p.name,
+            p.greeting,
+            p.line1,
+            p.line2,
+            p.line3,
+            l.depart_from
+        FROM people p 
+        JOIN location l on l.uid = p.uid
+        WHERE p.uid = ?1";
 
-    db.get(id).unwrap_or(&Message::default_message()).clone()
+     conn.unwrap().query_one(
+        query_cmd,
+        [uid],
+        |row | {
+            let depart_location_id: i32 = row.get(5).unwrap_or_default();
+            Ok(Person {
+                uid: uid.to_string(),
+                name: row.get(0)?,
+                greeting: row.get(1)?,
+                line1: row.get(2)?,
+                line2: row.get(3)?,
+                line3: row.get(4)?,
+                depart_from: DepartLocation::try_from(depart_location_id).unwrap_or_default(),
+            })
+        }).inspect_err(|e| {
+            warn!("Database query error: {e}")
+        }).unwrap_or(Person::with_default_message())
+
 }
 
-pub fn init_database() {
-    let mut db = database_writer();
+pub fn update_location(uid: &str, location: DepartLocation) -> Result<()> {
+    info!("Update depart location for user: {}. {}", uid, location);
 
-    if db.is_none() {
-        return;
-    }
+    let conn = Connection::open(
+        "/home/kiewn/working/wasm-wedding-invitation/database.db")?;
 
-    let mut db = db.unwrap();
+    let mut stmt = conn.prepare("UPDATE location SET depart_from = ?1 WHERE uid = ?2")?;
+    stmt.execute(params![location as i32, uid])?;
 
-    db.insert(
-        "769a53cc".to_string(),
-        Message {
-            line1: "Yo, my boiz Bach".to_string(),
-            line2: Some("It's kinda weird to say, but well... I'm getting married!".to_string()),
-            line3: Some("Would love you to be there.".to_string()),
-            ..Default::default()
-        },
-    );
-
-    db.insert(
-        "32985cff".to_string(),
-        Message {
-            line1: "Yo, my boiz Hoang,".to_string(),
-            line2: Some("Guess what, I'm getting married after all...".to_string()),
-            line3: Some("Would be awesome to have you there!".to_string()),
-            ..Default::default()
-        },
-    );
-
-    db.insert(
-        "48fa6f6c".to_string(),
-        Message {
-            line1: "Yo Hoang,".to_string(),
-            line2: Some("It's me! I'm getting married.".to_string()),
-            line3: Some("Hope you'll be there to celebrate with us.".to_string()),
-            ..Default::default()
-        },
-    );
-
-    db.insert(
-        "b814c11".to_string(),
-        Message {
-            line1: "Yo, Tuyet,".to_string(),
-            line2: Some("I'm getting married! xD".to_string()),
-            line3: Some("Let's come celebrate! :D".to_string()),
-            ..Default::default()
-        },
-    );
-
+    Ok(())
 }
