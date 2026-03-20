@@ -3,25 +3,28 @@
 use dioxus::prelude::*;
 use dioxus_bulma::{components::ColumnSize, prelude::*};
 
-use crate::components::common::{SectionTitle, Spacing};
+use crate::{
+    components::common::{SectionTitle, Spacing},
+    database::{DepartLocation, Person, update_location},
+};
 
 const FPT_QR: Asset = asset!("/assets/fpt.webp");
 const LOTTE_QR: Asset = asset!("/assets/lotte.webp");
 
 #[component]
-pub(super) fn RsvpSection() -> Element {
+pub(super) fn RsvpSection(get_user_data: Signal<Person>) -> Element {
     let dropdown_active = use_signal(|| false);
     let select_location = use_signal(|| String::from(""));
 
     rsx! {
-        section { 
+        section {
             id: "rsvp",
             class: "section-default rsvp-section has-text-centered has-vertically-aligned-content",
 
             Container {
                 SectionTitle { name: "RSVP" }
                 Message {  }
-                ConfirmationDropdown { dropdown_active, select_location }
+                ConfirmationDropdown { dropdown_active, select_location, get_user_data }
                 Contact { select_location }
             }
         }
@@ -48,7 +51,11 @@ fn Message() -> Element {
 }
 
 #[component]
-fn ConfirmationDropdown(dropdown_active: Signal<bool>, select_location: Signal<String>) -> Element {
+fn ConfirmationDropdown(
+    dropdown_active: Signal<bool>,
+    select_location: Signal<String>,
+    get_user_data: Signal<Person>,
+) -> Element {
     rsx! {
         Dropdown {
             class: "location-selector",
@@ -71,21 +78,27 @@ fn ConfirmationDropdown(dropdown_active: Signal<bool>, select_location: Signal<S
             }
             DropdownMenu {
                 style: "width: 100%; min-width: unset;",
-                DropdownItem { 
+                DropdownItem {
                     onclick: move |_| {
                         dropdown_active.set(false);
                         select_location.set(String::from("fpt"));
                     },
                     "FPT Tower/Handico Tower"
                 }
-                DropdownItem { 
+                DropdownItem {
                     onclick: move |_| {
                         dropdown_active.set(false);
                         select_location.set(String::from("lotte"));
+                        spawn(async move {
+                            match update_location_api(get_user_data().uid, DepartLocation::Fpt).await {
+                                Ok(_) => info!("Location updated"),
+                                Err(e) => error!("Failed to update location: {e}"),
+                            }
+                        });
                     },
                     "Lotte Mall West Lake"
                 }
-                DropdownItem { 
+                DropdownItem {
                     onclick: move |_| {
                         dropdown_active.set(false);
                         select_location.set(String::from("nil"));
@@ -135,4 +148,15 @@ fn ZaloGroup(src: Asset, url: String) -> Element {
             "group for transport updates and coordination."
         }
     }
+}
+
+#[post("/api/updateLocation")]
+pub async fn update_location_api(
+    uid: String,
+    location: DepartLocation,
+) -> Result<(), ServerFnError> {
+    update_location(uid.as_str(), location).inspect_err(|e| {
+        warn!("Update location error: {e}")
+    });
+    Ok(())
 }

@@ -19,7 +19,7 @@ pub fn MainContent(get_user_data: Signal<Person>) -> Element {
             introduce_section::IntroduceSection { get_user_data }
             time_section::TimeSection {  }
             location_section::LocationSection {  }
-            rsvp_section::RsvpSection {  }
+            rsvp_section::RsvpSection { get_user_data }
         }
     }
 }
