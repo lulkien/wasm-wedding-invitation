@@ -6,20 +6,24 @@ use dioxus::{fullstack::FromResponse, prelude::{info, warn}};
 use rusqlite::{Connection, Result, params};
 use serde::{Deserialize, Serialize};
 
+const DATABASE_PATH: &str = "/srv/wedding/database.db";
+
 #[derive(Clone, Default, PartialEq, Deserialize, Serialize)]
 pub enum DepartLocation {
     #[default]
     None = 0,
     Fpt = 1,
     Lotte = 2,
+    Nah = 3,
 }
 
 impl Display for DepartLocation {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            DepartLocation::None => write!(f, "I'll pass"),
+            DepartLocation::None => write!(f, "I haven't decided yet"),
             DepartLocation::Fpt => write!(f, "I wanna depart from FPT Tower"),
             DepartLocation::Lotte => write!(f, "I wanna depart from Lotte"),
+            DepartLocation::Nah => write!(f, "Sorry, I'll pass"),
         }
     }
 }
@@ -31,6 +35,7 @@ impl TryFrom<i32> for DepartLocation {
             0 => Ok(Self::None),
             1 => Ok(Self::Fpt),
             2 => Ok(Self::Lotte),
+            3 => Ok(Self::Nah),
             _ => Err(())
         }
     }
@@ -59,13 +64,10 @@ impl Person {
     }
 }
 
-
-
 pub fn query_user(uid: &str) -> Person {
     info!("Query user: {}", uid);
 
-    let conn = Connection::open(
-        "/home/kiewn/working/wasm-wedding-invitation/database.db");
+    let conn = Connection::open(DATABASE_PATH);
 
     if let Err(e) = conn {
         warn!("Database connection error: {e}");
@@ -89,6 +91,9 @@ pub fn query_user(uid: &str) -> Person {
         [uid],
         |row | {
             let depart_location_id: i32 = row.get(5).unwrap_or_default();
+
+            info!("{depart_location_id}");
+
             Ok(Person {
                 uid: uid.to_string(),
                 name: row.get(0)?,
@@ -107,8 +112,7 @@ pub fn query_user(uid: &str) -> Person {
 pub fn update_location(uid: &str, location: DepartLocation) -> Result<()> {
     info!("Update depart location for user: {}. {}", uid, location);
 
-    let conn = Connection::open(
-        "/home/kiewn/working/wasm-wedding-invitation/database.db")?;
+    let conn = Connection::open(DATABASE_PATH)?;
 
     let mut stmt = conn.prepare("UPDATE location SET depart_from = ?1 WHERE uid = ?2")?;
     stmt.execute(params![location as i32, uid])?;

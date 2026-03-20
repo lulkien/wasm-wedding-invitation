@@ -1,11 +1,9 @@
-#![allow(unused)]
-
 use dioxus::prelude::*;
 use dioxus_bulma::{components::ColumnSize, prelude::*};
 
 use crate::{
     components::common::{SectionTitle, Spacing},
-    database::{DepartLocation, Person, update_location},
+    database::{update_location, DepartLocation, Person},
 };
 
 const FPT_QR: Asset = asset!("/assets/fpt.webp");
@@ -13,8 +11,13 @@ const LOTTE_QR: Asset = asset!("/assets/lotte.webp");
 
 #[component]
 pub(super) fn RsvpSection(get_user_data: Signal<Person>) -> Element {
-    let dropdown_active = use_signal(|| false);
-    let select_location = use_signal(|| String::from(""));
+    let mut dropdown_active = use_signal(|| false);
+    let mut select_location = use_signal(|| get_user_data().depart_from);
+
+    use_effect(move || {
+        info!("Update RSVP Section");
+        select_location.set(get_user_data().depart_from);
+    });
 
     rsx! {
         section {
@@ -53,7 +56,7 @@ fn Message() -> Element {
 #[component]
 fn ConfirmationDropdown(
     dropdown_active: Signal<bool>,
-    select_location: Signal<String>,
+    select_location: Signal<DepartLocation>,
     get_user_data: Signal<Person>,
 ) -> Element {
     rsx! {
@@ -64,11 +67,11 @@ fn ConfirmationDropdown(
                 onclick: move |_| dropdown_active.set(!dropdown_active()),
                 Button {
                     class: "dropdown-button",
-                    match select_location().as_str() {
-                        "fpt" => "I want to depart from FPT Tower/Handico Tower",
-                        "lotte"=> "I want to depart from Lotte Mall West Lake",
-                        "" => "I want to depart from...",
-                        _  => "I can't make it"
+                    match select_location() {
+                        DepartLocation::None => "I want to depart from...",
+                        DepartLocation::Fpt => "I want to depart from FPT Tower/Handico Tower",
+                        DepartLocation::Lotte=> "I want to depart from Lotte Mall West Lake",
+                        DepartLocation::Nah  => "I can't make it"
                     }
                     span {
                         class: "icon is-small",
@@ -81,16 +84,22 @@ fn ConfirmationDropdown(
                 DropdownItem {
                     onclick: move |_| {
                         dropdown_active.set(false);
-                        select_location.set(String::from("fpt"));
+                        select_location.set(DepartLocation::Fpt);
+                        spawn(async move {
+                            match update_location_api(get_user_data().uid, DepartLocation::Fpt).await {
+                                Ok(_) => info!("Location updated"),
+                                Err(e) => error!("Failed to update location: {e}"),
+                            }
+                        });
                     },
                     "FPT Tower/Handico Tower"
                 }
                 DropdownItem {
                     onclick: move |_| {
                         dropdown_active.set(false);
-                        select_location.set(String::from("lotte"));
+                        select_location.set(DepartLocation::Lotte);
                         spawn(async move {
-                            match update_location_api(get_user_data().uid, DepartLocation::Fpt).await {
+                            match update_location_api(get_user_data().uid, DepartLocation::Lotte).await {
                                 Ok(_) => info!("Location updated"),
                                 Err(e) => error!("Failed to update location: {e}"),
                             }
@@ -101,7 +110,13 @@ fn ConfirmationDropdown(
                 DropdownItem {
                     onclick: move |_| {
                         dropdown_active.set(false);
-                        select_location.set(String::from("nil"));
+                        select_location.set(DepartLocation::Nah);
+                        spawn(async move {
+                            match update_location_api(get_user_data().uid, DepartLocation::Nah).await {
+                                Ok(_) => info!("Location updated"),
+                                Err(e) => error!("Failed to update location: {e}"),
+                            }
+                        });
                     },
                     "I can't make it"
                 }
@@ -111,14 +126,14 @@ fn ConfirmationDropdown(
 }
 
 #[component]
-fn Contact(select_location: Signal<String>) -> Element {
+fn Contact(select_location: Signal<DepartLocation>) -> Element {
     rsx! {
         div {
-            match select_location().as_str() {
-                "fpt" => rsx! { ZaloGroup { src: FPT_QR , url: "https://zalo.me/g/en42usc62wqiernfxxcn".to_string() } },
-                "lotte" => rsx! { ZaloGroup { src: LOTTE_QR, url: "https://zalo.me/g/wxrlhr776".to_string() } },
-                "" => { rsx! {  } }
-                _ => rsx! {
+            match select_location() {
+                DepartLocation::None => { rsx! {  } }
+                DepartLocation::Fpt => rsx! { ZaloGroup { src: FPT_QR , url: "https://zalo.me/g/en42usc62wqiernfxxcn".to_string() } },
+                DepartLocation::Lotte => rsx! { ZaloGroup { src: LOTTE_QR, url: "https://zalo.me/g/wxrlhr776".to_string() } },
+                DepartLocation::Nah => rsx! {
                     p {
                         font_size: "1rem",
                         "No worries at all—we'll catch up with you soon!"
@@ -155,8 +170,6 @@ pub async fn update_location_api(
     uid: String,
     location: DepartLocation,
 ) -> Result<(), ServerFnError> {
-    update_location(uid.as_str(), location).inspect_err(|e| {
-        warn!("Update location error: {e}")
-    });
+    update_location(uid.as_str(), location).inspect_err(|e| warn!("Update location error: {e}"));
     Ok(())
 }
