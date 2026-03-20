@@ -11,24 +11,26 @@ use crate::{
 const SECTION_IMAGE_START: Asset = asset!("/assets/floral-border-optimized.webp");
 
 #[component]
-pub(super) fn IntroduceSection(get_user_data: Signal<Person>) -> Element {
+pub(super) fn IntroduceSection(get_user_data: Signal<Option<Person>>) -> Element {
+    let Some(user) = get_user_data() else {
+        return rsx! { div { } };
+    };
+
     rsx! {
         section {
             id: "intro",
             class: "section-default introduce-section no-padding-top has-text-centered has-vertically-aligned-content",
-
             background_image: "url({SECTION_IMAGE_END})",
             background_position: "bottom -30px center",
             background_repeat: "no-repeat",
             background_size: "initial",
-
             FloralBorderTop {  }
             Message {
-                greeting: get_user_data().greeting,
-                name: get_user_data().name,
-                line1: get_user_data().line1,
-                line2: get_user_data().line2,
-                line3: get_user_data().line3,
+                greeting: user.greeting,
+                name: user.name,
+                line1: user.line1,
+                line2: user.line2,
+                line3: user.line3,
             }
             Spacing { space: "40px" }
             Spacing { space: "40px" }
