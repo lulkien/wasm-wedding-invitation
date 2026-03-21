@@ -298,6 +298,14 @@ html {
     font-size: 1rem;
 }
 
+.main-content .rsvp-section .confirm-button {
+    background-color: #996E6D;
+    color: ghostwhite;
+    padding: 15px 10px;
+    font-size: 1.1rem;
+    margin-left: 20px;
+}
+
 .main-content .rsvp-section .qr-code {
     width: 300px !important;
     height: 305px !important;

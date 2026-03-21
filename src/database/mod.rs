@@ -5,16 +5,21 @@ use rusqlite::{params, Connection, Result};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
-// const DATABASE_PATH: &str = "/srv/wedding/database.db";
+#[cfg(debug_assertions)]
 const DATABASE_PATH: &str = "/home/kiewn/working/wasm-wedding-invitation/database.db";
+
+#[cfg(not(debug_assertions))]
+const DATABASE_PATH: &str = "/srv/wedding/database.db";
 
 #[derive(Clone, Copy, Default, PartialEq, Deserialize, Serialize)]
 pub enum DepartLocation {
     #[default]
     None = 0,
     Fpt = 1,
-    Lotte = 2,
-    Nah = 3,
+    Handico = 2,
+    Lotte = 3,
+    MyVehicle = 4,
+    Nah = 5,
 }
 
 impl Display for DepartLocation {
@@ -22,7 +27,9 @@ impl Display for DepartLocation {
         match self {
             DepartLocation::None => write!(f, "I haven't decided yet"),
             DepartLocation::Fpt => write!(f, "I wanna depart from FPT Tower"),
+            DepartLocation::Handico => write!(f, "I wanna depart from Handico Tower"),
             DepartLocation::Lotte => write!(f, "I wanna depart from Lotte"),
+            DepartLocation::MyVehicle => write!(f, "I will use my own vehicle"),
             DepartLocation::Nah => write!(f, "Sorry, I'll pass"),
         }
     }
@@ -34,8 +41,10 @@ impl TryFrom<i32> for DepartLocation {
         match value {
             0 => Ok(Self::None),
             1 => Ok(Self::Fpt),
-            2 => Ok(Self::Lotte),
-            3 => Ok(Self::Nah),
+            2 => Ok(Self::Handico),
+            3 => Ok(Self::Lotte),
+            4 => Ok(Self::MyVehicle),
+            5 => Ok(Self::Nah),
             _ => Err(()),
         }
     }
@@ -94,6 +103,7 @@ pub fn update_location(uid: &str, location: DepartLocation) -> Result<()> {
 
     let query_cmd = "UPDATE location SET depart_from = ?1 WHERE uid = '?2'";
     info!("{}", query_cmd);
+    info!("Params: uid='{}' | depart_from={}", uid, location as i32);
 
     let mut stmt = conn.prepare("UPDATE location SET depart_from = ?1 WHERE uid = ?2")?;
     stmt.execute(params![location as i32, uid])?;

@@ -1,4 +1,3 @@
-#![allow(unused)]
 use crate::database::Person;
 use dioxus::prelude::*;
 use dioxus_bulma::prelude::*;

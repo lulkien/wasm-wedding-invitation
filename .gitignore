@@ -7,3 +7,5 @@
 **/*.rs.bk
 
 *.bak
+
+database.db
