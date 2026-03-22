@@ -3,8 +3,8 @@
 use dioxus::prelude::*;
 use dioxus_bulma::{components::ColumnSize, prelude::*};
 
-const SECTION_IMAGE_DIVIDER: Asset = asset!("/assets/divider-leaves-optimized.webp");
-pub const SECTION_IMAGE_END: Asset = asset!("/assets/divider-flowers-leaves-optimized.webp");
+const SECTION_IMAGE_DIVIDER: Asset = asset!("/assets/divider-leaves.webp");
+pub const SECTION_IMAGE_END: Asset = asset!("/assets/divider-flowers-leaves.webp");
 
 #[derive(Props, Clone, PartialEq)]
 pub struct SpacingProps {

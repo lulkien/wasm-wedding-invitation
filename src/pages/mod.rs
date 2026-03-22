@@ -8,7 +8,7 @@ mod admin;
 mod invitation;
 mod page_not_found;
 
-const FAVICON: Asset = asset!("/assets/favicon.png");
+const FAVICON: Asset = asset!("/assets/favicon.webp");
 const MAIN_CSS: Asset = asset!("/assets/main.css");
 
 #[component]

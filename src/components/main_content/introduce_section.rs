@@ -9,7 +9,7 @@ use crate::{
     database::Person,
 };
 
-const SECTION_IMAGE_START: Asset = asset!("/assets/floral-border-optimized.webp");
+const SECTION_IMAGE_START: Asset = asset!("/assets/floral-border.webp");
 
 #[component]
 pub(super) fn IntroduceSection(get_user_data: Signal<Option<Person>>) -> Element {

@@ -6,6 +6,8 @@ use crate::{
     database::{self, Person},
 };
 
+const FLOWER_IMAGE: Asset = asset!("/assets/favicon.webp");
+
 #[component]
 pub(super) fn Invitation(uid: String) -> Element {
     let mut get_user_data = use_signal(|| Option::<Person>::None);
@@ -56,8 +58,16 @@ fn LoadingOverlay() -> Element {
         div {
             class: "loading-overlay",
             div {
-                class: "message",
-                "Invitation is loading..."
+                class: "loading-flower",
+                img {
+                    class: "flower-spin",
+                    src: FLOWER_IMAGE,
+                    alt: "flower"
+                }
+            }
+            p {
+                class: "loading-text",
+                "Loading..."
             }
         }
     }
