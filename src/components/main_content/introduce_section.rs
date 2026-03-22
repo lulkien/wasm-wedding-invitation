@@ -5,6 +5,7 @@ use dioxus_bulma::prelude::*;
 
 use crate::{
     components::common::{DividerLeaves, Spacing, SECTION_IMAGE_END},
+    config::wedding_config,
     database::Person,
 };
 
@@ -89,11 +90,12 @@ fn Message(props: MessageProps) -> Element {
 
 #[component]
 fn BrideAndGroomItem() -> Element {
+    let config = wedding_config();
     rsx! {
         div {
-            BrideAndGroom { name: "Luu Hoang Kien" }
+            BrideAndGroom { name: config.couple.groom_name.clone() }
             div { class: "ampersand", "&" }
-            BrideAndGroom { name: "Pham Thi Hang" }
+            BrideAndGroom { name: config.couple.bride_name.clone() }
         }
     }
 }

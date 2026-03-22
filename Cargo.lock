@@ -5642,6 +5642,7 @@ dependencies = [
  "rusqlite",
  "sass-rs",
  "serde",
+ "serde_json",
  "webbrowser",
 ]
 

@@ -3,19 +3,21 @@ use dioxus::prelude::*;
 use dioxus_bulma::components::Container;
 use gloo_timers::callback::Interval;
 
-const BG_IMAGE: Asset = asset!("/assets/hero-bg.jpg");
+use crate::config::wedding_config;
 
-// Ceremony: March 28, 2026 1:30 PM Vietnam time (UTC+7) = 06:30 UTC
-const CEREMONY_UTC: &str = "2026-03-28T06:30:00Z";
+const BG_IMAGE: Asset = asset!("/assets/hero-bg.jpg");
 
 #[component]
 pub fn Hero() -> Element {
-    let countdown = use_signal(|| compute_countdown());
+    let config = wedding_config();
+    let countdown = use_signal(|| compute_countdown(&config.ceremony.date_utc));
 
+    let date_utc = config.ceremony.date_utc.clone();
     use_effect(move || {
         let mut countdown = countdown;
+        let date_utc = date_utc.clone();
         Interval::new(1000, move || {
-            countdown.set(compute_countdown());
+            countdown.set(compute_countdown(&date_utc));
         })
         .forget();
     });
@@ -32,8 +34,12 @@ pub fn Hero() -> Element {
                 Container {
                     class: "has-text-centered",
                     Subtitle {  }
-                    Title {  }
-                    DateAndTime {  }
+                    Title { title: config.couple.title.clone() }
+                    DateAndTime {
+                        date_display: config.ceremony.date_display.clone(),
+                        location_line: config.venue.location_line.clone(),
+                        province: config.venue.province.clone(),
+                    }
                     Countdown {
                         days: days,
                         hours: hours,
@@ -46,8 +52,8 @@ pub fn Hero() -> Element {
     }
 }
 
-fn compute_countdown() -> (u32, u32, u32, u32) {
-    let target: DateTime<Utc> = CEREMONY_UTC.parse().unwrap_or_default();
+fn compute_countdown(date_utc: &str) -> (u32, u32, u32, u32) {
+    let target: DateTime<Utc> = date_utc.parse().unwrap_or_default();
     let now = Utc::now();
     let duration = target.signed_duration_since(now);
 
@@ -106,25 +112,25 @@ fn Subtitle() -> Element {
 }
 
 #[component]
-fn Title() -> Element {
+fn Title(title: String) -> Element {
     rsx! {
         h2 {
             class: "title",
-            "Hoang Kien & Pham Hang"
+            "{title}"
         }
     }
 }
 
 #[component]
-fn DateAndTime() -> Element {
+fn DateAndTime(date_display: String, location_line: String, province: String) -> Element {
     rsx! {
         h4 {
             class: "subtitle",
-            "Saturday, March 28, 2026"
+            "{date_display}"
             br {  }
-            "Trieu Tien, Son Nam Ward"
+            "{location_line}"
             br {  }
-            "Hung Yen Province"
+            "{province}"
         }
     }
 }

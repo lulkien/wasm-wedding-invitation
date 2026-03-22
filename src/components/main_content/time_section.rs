@@ -4,6 +4,7 @@ use dioxus::prelude::*;
 use dioxus_bulma::{components::ColumnSize, prelude::*};
 
 use crate::components::common::{SectionTitle, Spacing};
+use crate::config::wedding_config;
 
 #[component]
 pub(super) fn TimeSection() -> Element {
@@ -35,19 +36,21 @@ fn Calendar() -> Element {
 
 #[component]
 fn DateTimeColumn() -> Element {
+    let config = wedding_config();
     rsx! {
         Column {
             class: "has-vertically-aligned-content",
             size: ColumnSize::Four,
-            div { class: "has-text-centered", "Saturday" }
-            div { class: "day-number has-text-centered", "28" }
-            div { class: "has-text-centered", "March 2026" }
+            div { class: "has-text-centered", "{config.ceremony.day_of_week}" }
+            div { class: "day-number has-text-centered", "{config.ceremony.day_number}" }
+            div { class: "has-text-centered", "{config.ceremony.month_year}" }
         }
     }
 }
 
 #[component]
 fn ReceptionTime() -> Element {
+    let config = wedding_config();
     rsx! {
         Column {
             class: "has-vertically-aligned-content",
@@ -56,7 +59,7 @@ fn ReceptionTime() -> Element {
                 class: "is-larger has-text-centered",
                 "Reception:"
                 br {  }
-                "8:30 AM"
+                "{config.ceremony.reception_time}"
             }
         }
     }
@@ -64,6 +67,7 @@ fn ReceptionTime() -> Element {
 
 #[component]
 fn CeremonyTime() -> Element {
+    let config = wedding_config();
     rsx! {
         Column {
             class: "has-vertically-aligned-content",
@@ -72,7 +76,7 @@ fn CeremonyTime() -> Element {
                 class: "is-larger has-text-centered",
                 "Ceremony:"
                 br {  }
-                "1:30 PM"
+                "{config.ceremony.ceremony_time}"
             }
         }
     }

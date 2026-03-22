@@ -1,0 +1,24 @@
+{
+  "ceremony": {
+    "date_utc": "2026-03-28T06:30:00Z",
+    "date_display": "Saturday, March 28, 2026",
+    "day_of_week": "Saturday",
+    "day_number": "28",
+    "month_year": "March 2026",
+    "reception_time": "8:30 AM",
+    "ceremony_time": "1:30 PM"
+  },
+  "venue": {
+    "name": "Near Doc Suoi Roundabout",
+    "address": "Trieu Tien Village, Son Nam Ward, Hung Yen Province",
+    "location_line": "Trieu Tien, Son Nam Ward",
+    "province": "Hung Yen Province",
+    "maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3732.4018810793696!2d106.05648041264276!3d20.693899080793273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135c74c3c5622c3%3A0xd00469807a33cd80!2zSMawxqFuZyBUcuG6p20gSHV54buBbiBBbmg!5e0!3m2!1sen!2sus!4v1772970153119!5m2!1sen!2sus",
+    "maps_directions_url": "https://maps.app.goo.gl/s2h3ZqW3NiUGJhk69"
+  },
+  "couple": {
+    "groom_name": "Luu Hoang Kien",
+    "bride_name": "Pham Thi Hang",
+    "title": "Hoang Kien & Pham Hang"
+  }
+}

@@ -6,6 +6,7 @@ use dioxus_bulma::prelude::*;
 use crate::pages::PageLoader;
 
 mod components;
+mod config;
 mod database;
 mod pages;
 

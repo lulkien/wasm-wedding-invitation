@@ -12,6 +12,7 @@ gloo-timers = "0.3"
 dioxus-bulma = { version = "0.7" }
 rusqlite = { version = "0.39.0", features = ["bundled"] }
 serde = "1.0.228"
+serde_json = "1.0"
 webbrowser = "1.2.0"
 
 [build-dependencies]
