@@ -162,6 +162,14 @@ html {
 
 /*=============================== END NAVIGATION BAR =================================*/
 
+/* Scroll targets: offset for sticky navbar (50px) */
+#intro,
+#time,
+#location,
+#rsvp {
+    scroll-margin-top: 50px;
+}
+
 /*=============================== MAIN CONTENT =================================*/
 
 .main-content {
