@@ -1,11 +1,6 @@
 use dioxus::prelude::*;
 use dioxus_bulma::components::Title;
 
-use crate::{
-    components::{home, main_content},
-    database::{self, Person},
-};
-
 use invitation::Invitation;
 use page_not_found::PageNotFound;
 

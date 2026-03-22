@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 use dioxus_bulma::components::Title;
 
 use crate::{
-    components::{home, main_content, navigation_bar},
+    components::{hero, main_content, navigation_bar},
     database::{self, Person},
 };
 
@@ -35,7 +35,7 @@ pub(super) fn Invitation(uid: String) -> Element {
     rsx! {
         div {
             class: "invitation-page",
-            home::Hero {  }
+            hero::Hero {  }
             navigation_bar::NavigationBar {  }
             main_content::MainContent { get_user_data }
 

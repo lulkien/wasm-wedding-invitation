@@ -1,16 +1,23 @@
 use dioxus::prelude::*;
 use dioxus_bulma::components::Container;
 
+const BG_IMAGE: Asset = asset!("/assets/hero-bg.jpg");
+
 #[component]
-pub(super) fn Hero() -> Element {
+pub fn Hero() -> Element {
     rsx! {
-        div {
-            class: "hero-body",
-            Container {
-                class: "has-text-centered",
-                Subtitle {  }
-                Title {  }
-                DateAndTime {  }
+        section {
+            id: "home",
+            class: "hero is-large",
+            background_image: "url({BG_IMAGE})",
+            div {
+                class: "hero-body",
+                Container {
+                    class: "has-text-centered",
+                    Subtitle {  }
+                    Title {  }
+                    DateAndTime {  }
+                }
             }
         }
     }
@@ -19,9 +26,9 @@ pub(super) fn Hero() -> Element {
 #[component]
 fn Subtitle() -> Element {
     rsx! {
-        h1 { 
+        h1 {
             class: "subtitle subtitle--lead",
-            "Wedding Invitation" 
+            "Wedding Invitation"
         }
     }
 }
@@ -38,14 +45,13 @@ fn Title() -> Element {
 
 #[component]
 fn DateAndTime() -> Element {
-    rsx!{
+    rsx! {
         h4 {
             class: "subtitle",
-
             "Saturday, March 28, 2026"
-            br {}
+            br {  }
             "Trieu Tien, Son Nam Ward"
-            br {}
+            br {  }
             "Hung Yen Province"
         }
     }
