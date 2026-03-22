@@ -99,6 +99,50 @@ html {
     font-size: 1.3rem;
 }
 
+.hero .countdown {
+    padding-top: 35px;
+}
+
+.hero .countdown__list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 0.5rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: whitesmoke;
+    font-family: 'Raleway', sans-serif;
+}
+
+.hero .countdown__list li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero .countdown__number {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.hero .countdown__label {
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+.hero .countdown__separator {
+    font-size: 2rem;
+    font-weight: 700;
+    padding-bottom: 1.2rem;
+}
+
 /*=============================== END HERO =================================*/
 
 /*=============================== NAVIGATION BAR =================================*/

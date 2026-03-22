@@ -5638,6 +5638,7 @@ dependencies = [
  "chrono",
  "dioxus",
  "dioxus-bulma",
+ "gloo-timers",
  "rusqlite",
  "sass-rs",
  "serde",
