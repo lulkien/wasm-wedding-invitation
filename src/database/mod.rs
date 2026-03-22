@@ -72,13 +72,22 @@ impl Person {
     }
 }
 
+fn is_valid_uid(uid: &str) -> bool {
+    uid.len() == 8 && uid.chars().all(|c| c.is_ascii_hexdigit())
+}
+
 pub fn query_user(uid: &str) -> Option<Person> {
+    if !is_valid_uid(uid) {
+        warn!("Invalid uid: '{}'", uid);
+        return None;
+    }
+
     let conn = Connection::open(DATABASE_PATH)
         .inspect_err(|e| warn!("Database connection error: {e}"))
         .ok()?;
 
     let query_cmd = "SELECT p.name, p.greeting, p.line1, p.line2, p.line3, l.depart_from FROM people p JOIN location l on l.uid = p.uid WHERE p.uid = ?1";
-    
+
     info!("Query: {}", query_cmd);
     info!("Params: uid='{}'", uid);
 
@@ -99,6 +108,11 @@ pub fn query_user(uid: &str) -> Option<Person> {
 }
 
 pub fn update_location(uid: &str, location: DepartLocation) -> Result<()> {
+    if !is_valid_uid(uid) {
+        warn!("Invalid uid: '{}'", uid);
+        return Err(rusqlite::Error::InvalidParameterName(uid.to_string()));
+    }
+
     let conn = Connection::open(DATABASE_PATH)?;
 
     let query_cmd = "UPDATE location SET depart_from = ?1 WHERE uid = '?2'";
