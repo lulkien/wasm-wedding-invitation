@@ -56,7 +56,7 @@ fn LoadingOverlay() -> Element {
         div {
             class: "loading-overlay",
             div {
-                class: "loading-overlay__message",
+                class: "message",
                 "Invitation is loading..."
             }
         }
@@ -69,7 +69,7 @@ fn NotFoundOverlay() -> Element {
         div {
             class: "not-found-overlay",
             div {
-                class: "not-found-overlay__message",
+                class: "message",
                 "Nothing here my friend xD"
             }
         }

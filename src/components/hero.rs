@@ -71,41 +71,10 @@ fn compute_countdown(date_utc: &str) -> (u32, u32, u32, u32) {
 }
 
 #[component]
-fn Countdown(days: u32, hours: u32, mins: u32, secs: u32) -> Element {
-    rsx! {
-        div {
-            class: "countdown",
-            ul {
-                class: "countdown__list",
-                li {
-                    span { class: "countdown__number", "{days:02}" }
-                    p { class: "countdown__label", "Days" }
-                }
-                li { class: "countdown__separator", ":" }
-                li {
-                    span { class: "countdown__number", "{hours:02}" }
-                    p { class: "countdown__label", "Hours" }
-                }
-                li { class: "countdown__separator", ":" }
-                li {
-                    span { class: "countdown__number", "{mins:02}" }
-                    p { class: "countdown__label", "Minutes" }
-                }
-                li { class: "countdown__separator", ":" }
-                li {
-                    span { class: "countdown__number", "{secs:02}" }
-                    p { class: "countdown__label", "Seconds" }
-                }
-            }
-        }
-    }
-}
-
-#[component]
 fn Subtitle() -> Element {
     rsx! {
         h1 {
-            class: "subtitle subtitle--lead",
+            class: "subtitle subtitle-lead",
             "Wedding Invitation"
         }
     }
@@ -131,6 +100,48 @@ fn DateAndTime(date_display: String, location_line: String, province: String) ->
             "{location_line}"
             br {  }
             "{province}"
+        }
+    }
+}
+
+#[component]
+fn Countdown(days: u32, hours: u32, mins: u32, secs: u32) -> Element {
+    rsx! {
+        div {
+            class: "countdown-wrapper",
+            nav {
+                class: "level countdown",
+                CountdownItem { value: days, label: "Days" }
+                CountdownSeparator {}
+                CountdownItem { value: hours, label: "Hours" }
+                CountdownSeparator {}
+                CountdownItem { value: mins, label: "Minutes" }
+                CountdownSeparator {}
+                CountdownItem { value: secs, label: "Seconds" }
+            }
+        }
+    }
+}
+
+#[component]
+fn CountdownItem(value: u32, label: &'static str) -> Element {
+    rsx! {
+        div {
+            class: "level-item has-text-centered",
+            div {
+                p { class: "title", "{value:02}" }
+                p { class: "heading", "{label}" }
+            }
+        }
+    }
+}
+
+#[component]
+fn CountdownSeparator() -> Element {
+    rsx! {
+        div {
+            class: "level-item",
+            p { class: "title separator", ":" }
         }
     }
 }

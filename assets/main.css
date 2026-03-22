@@ -27,8 +27,8 @@
     background-color: ghostwhite;
 }
 
-.loading-overlay__message,
-.not-found-overlay__message {
+.loading-overlay .message,
+.not-found-overlay .message {
     font-size: 3rem;
     text-align: center;
     color: black;
@@ -50,8 +50,8 @@
 
 /*=============================== HERO =================================*/
 
-.hero .subtitle--lead {
-    font-size: 1.75rem;
+.hero .subtitle-lead {
+    font-size: 1.75rem !important;
 }
 
 .has-vertically-aligned-content {
@@ -103,44 +103,35 @@ html {
     padding-top: 35px;
 }
 
-.hero .countdown__list {
+.hero .countdown-wrapper {
     display: flex;
-    align-items: center;
     justify-content: center;
-    flex-wrap: nowrap;
-    gap: 0.5rem 1rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    color: whitesmoke;
-    font-family: 'Raleway', sans-serif;
 }
 
-.hero .countdown__list li {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.hero .countdown.level {
+    display: inline-flex;
+    width: auto;
 }
 
-.hero .countdown__number {
-    font-size: 2rem;
-    font-weight: 700;
-    line-height: 1.2;
+.hero .countdown .level-item {
+    flex-grow: 0;
+    padding: 0 0.5rem;
 }
 
-.hero .countdown__label {
-    margin: 0.25rem 0 0;
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.9;
-}
-
-.hero .countdown__separator {
+.hero .countdown .separator {
     font-size: 2rem;
     font-weight: 700;
     padding-bottom: 1.2rem;
+}
+.hero .countdown .heading {
+    color: whitesmoke !important;
+    letter-spacing: 1px;
+}
+
+.hero .countdown .title {
+    color: whitesmoke !important;
+    font-family: 'Raleway', sans-serif !important;
+    font-size: 2rem !important;
 }
 
 /*=============================== END HERO =================================*/

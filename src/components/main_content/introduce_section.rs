@@ -65,7 +65,7 @@ pub struct MessageProps {
 #[component]
 fn Message(props: MessageProps) -> Element {
     let lines = [
-        Some(format!("{} {}", props.greeting, props.name)),
+        Some(format!("{} {},", props.greeting, props.name)),
         Some(props.line1),
         props.line2,
         props.line3,
@@ -81,6 +81,7 @@ fn Message(props: MessageProps) -> Element {
             for (i, line) in lines.iter().enumerate() {
                 "{line}"
                 if i < lines.len() - 1 {
+                    br { }
                     br { }
                 }
             }
