@@ -68,6 +68,7 @@ html {
     font-family: 'Raleway', Tahoma, sans-serif;
     width: 100%;
     min-height: 100%;
+    scroll-behavior: smooth;
 }
 
 /*=============================== HERO =================================*/
@@ -98,45 +99,68 @@ html {
     font-size: 1.3rem;
 }
 
-.hero .hero-foot {
+/*=============================== END HERO =================================*/
+
+/*=============================== NAVIGATION BAR =================================*/
+
+.navigation-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
     height: 50px;
     background: white;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.082);
+    font-family: 'Raleway', sans-serif;
 }
 
-.hero .hero-foot .hero-foot-wrapper {
-    margin: 7px auto;
+.navigation-bar__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1152px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
     height: 50px;
 }
 
-.hero .hero-foot .hero-foot-wrapper .hero-menu-desktop {
+.navigation-bar__menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
     line-height: 38px;
     font-weight: 600;
     letter-spacing: 1px;
     font-size: 1rem;
 }
 
-.hero .hero-foot .hero-foot-wrapper .hero-menu-desktop ul li {
+.navigation-bar__menu li {
     display: inline-block;
     padding-right: 15px;
     padding-left: 15px;
 }
 
-.hero .hero-foot .hero-foot-wrapper .hero-menu-desktop ul li.is-active a {
+.navigation-bar__menu li.is-active a {
     border-bottom: 2px solid #996E6D;
 }
 
-.hero .hero-foot .hero-foot-wrapper .hero-menu-desktop ul li a {
+.navigation-bar__menu li a {
     color: #996E6D;
 }
 
-.hero .hero-foot .hero-foot-wrapper .hero-menu-desktop ul li a:hover {
+.navigation-bar__menu li a:hover {
     color: #996E6D;
     transition: all .2s ease-in-out;
     border-bottom: 2px solid #c28285;
 }
 
-/*=============================== END HERO =================================*/
+/*=============================== END NAVIGATION BAR =================================*/
 
 /*=============================== MAIN CONTENT =================================*/
 
