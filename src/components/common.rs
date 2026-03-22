@@ -15,8 +15,8 @@ pub struct SpacingProps {
 pub fn Spacing(props: SpacingProps) -> Element {
     rsx! {
         span {
-            width: "100%",
-            height: "{props.space}"
+            class: "spacing",
+            style: "--spacing-height: {props.space}",
         }
     }
 }

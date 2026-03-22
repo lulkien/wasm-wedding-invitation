@@ -3,7 +3,7 @@
 use dioxus::{logger::{self, tracing::Level}, prelude::*};
 use dioxus_bulma::prelude::*;
 
-use crate::pages::FrontPage;
+use crate::pages::PageLoader;
 
 mod components;
 mod database;
@@ -21,7 +21,7 @@ fn App() -> Element {
             theme: BulmaTheme::Light,
             load_bulma_css: true,
 
-            FrontPage {  }
+            PageLoader {  }
         }
     }
 }

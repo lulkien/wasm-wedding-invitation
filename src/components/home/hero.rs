@@ -20,8 +20,7 @@ pub(super) fn Hero() -> Element {
 fn Subtitle() -> Element {
     rsx! {
         h1 { 
-            class: "subtitle",
-            font_size: "1.75rem",
+            class: "subtitle subtitle--lead",
             "Wedding Invitation" 
         }
     }

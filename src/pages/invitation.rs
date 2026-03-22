@@ -1,5 +1,3 @@
-#![allow(unused)]
-
 use dioxus::prelude::*;
 use dioxus_bulma::components::Title;
 
@@ -8,45 +6,8 @@ use crate::{
     database::{self, Person},
 };
 
-const FAVICON: Asset = asset!("/assets/favicon.png");
-const MAIN_CSS: Asset = asset!("/assets/main.css");
-
 #[component]
-pub fn FrontPage() -> Element {
-    rsx! {
-        document::Link { rel: "icon", href: FAVICON }
-        document::Link { rel: "stylesheet", href: MAIN_CSS }
-        Router::<Route> {  }
-    }
-}
-
-#[derive(Clone, Debug, PartialEq, Routable)]
-pub enum Route {
-    #[route("/")]
-    PageNotFound,
-
-    #[route("/invitation/:uid")]
-    Invitation { uid: String },
-}
-
-#[component]
-fn PageNotFound() -> Element {
-    rsx! {
-        div {
-            display: "flex",
-            justify_content: "center",
-            align_items: "center",
-            height: "100vh",
-
-            Title {
-                "Nothing here my friend xD"
-            }
-        }
-    }
-}
-
-#[component]
-pub fn Invitation(uid: String) -> Element {
+pub(super) fn Invitation(uid: String) -> Element {
     let mut get_user_data = use_signal(|| Option::<Person>::None);
     let mut loading = use_signal(|| true);
     let mut not_found = use_signal(|| false);
@@ -73,13 +34,14 @@ pub fn Invitation(uid: String) -> Element {
 
     rsx! {
         div {
-            background_color: "ghostwhite",
+            class: "invitation-page",
             home::HeaderWrapper {  }
             main_content::MainContent { get_user_data }
 
             if loading() {
                 LoadingOverlay {  }
             }
+
             if not_found() {
                 NotFoundOverlay {  }
             }
@@ -91,7 +53,11 @@ pub fn Invitation(uid: String) -> Element {
 fn LoadingOverlay() -> Element {
     rsx! {
         div {
-            style: "position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(255,255,255,0.95); display: flex; justify-content: center; align-items: center; z-index: 9999;",
+            class: "loading-overlay",
+            div {
+                class: "loading-overlay__message",
+                "Invitation is loading..."
+            }
         }
     }
 }
@@ -100,11 +66,9 @@ fn LoadingOverlay() -> Element {
 fn NotFoundOverlay() -> Element {
     rsx! {
         div {
-            style: "position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: ghostwhite; display: flex; justify-content: center; align-items: center; z-index: 9999;",
+            class: "not-found-overlay",
             div {
-                font_size: "3rem",
-                text_align: "center",
-                color: "black",
+                class: "not-found-overlay__message",
                 "Nothing here my friend xD"
             }
         }

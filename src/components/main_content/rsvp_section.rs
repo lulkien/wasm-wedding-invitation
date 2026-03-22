@@ -86,7 +86,6 @@ fn ConfirmationDropdown(
                 }
             }
             DropdownMenu {
-                style: "width: 100%; min-width: unset;",
                 DropdownItem {
                     onclick: move |_| {
                         dropdown_active.set(false);
@@ -138,13 +137,13 @@ fn Contact(select_location: Signal<DepartLocation>) -> Element {
                 DepartLocation::Lotte => rsx! { ZaloGroup { src: LOTTE_QR, url: "https://zalo.me/g/wxrlhr776".to_string() } },
                 DepartLocation::MyVehicle => rsx! {
                     p {
-                        font_size: "1rem",
+                        class: "rsvp-contact-message",
                         "Awesome, can't wait to celebrate with you!"
                     }
                 },
                 DepartLocation::Nah => rsx! {
                     p {
-                        font_size: "1rem",
+                        class: "rsvp-contact-message",
                         "No worries at all—we'll catch up with you soon!"
                     }
                 }
@@ -161,7 +160,7 @@ fn ZaloGroup(src: Asset, url: String) -> Element {
             src: "{src}"
         }
         p {
-            font_size: "1rem",
+            class: "zalo-instruction",
             "If you don't mind, please join this"
             a {
                 onclick: move |_| {

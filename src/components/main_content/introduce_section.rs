@@ -21,9 +21,6 @@ pub(super) fn IntroduceSection(get_user_data: Signal<Option<Person>>) -> Element
             id: "intro",
             class: "section-default introduce-section no-padding-top has-text-centered has-vertically-aligned-content",
             background_image: "url({SECTION_IMAGE_END})",
-            background_position: "bottom -30px center",
-            background_repeat: "no-repeat",
-            background_size: "initial",
             FloralBorderTop {  }
             Message {
                 greeting: user.greeting,
