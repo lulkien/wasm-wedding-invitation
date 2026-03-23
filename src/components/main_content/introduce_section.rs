@@ -13,28 +13,26 @@ const SECTION_IMAGE_START: Asset = asset!("/assets/floral-border.webp");
 
 #[component]
 pub(super) fn IntroduceSection(get_user_data: Signal<Option<Person>>) -> Element {
-    let Some(user) = get_user_data() else {
-        return rsx! { div { } };
-    };
-
     rsx! {
         section {
             id: "intro",
             class: "section-default introduce-section no-padding-top has-text-centered has-vertically-aligned-content",
             background_image: "url({SECTION_IMAGE_END})",
-            FloralBorderTop {  }
-            Message {
-                greeting: user.greeting,
-                name: user.name,
-                line1: user.line1,
-                line2: user.line2,
-                line3: user.line3,
+            FloralBorderTop {}
+            if let Some(user) = get_user_data() {
+                Message {
+                    greeting: user.greeting,
+                    name: user.name,
+                    line1: user.line1,
+                    line2: user.line2,
+                    line3: user.line3,
+                }
             }
             Spacing { space: "40px" }
             Spacing { space: "40px" }
-            BrideAndGroomItem {  }
+            BrideAndGroomItem {}
             Spacing { space: "40px" }
-            DividerLeaves {  }
+            DividerLeaves {}
             Spacing { space: "40px" }
         }
     }
