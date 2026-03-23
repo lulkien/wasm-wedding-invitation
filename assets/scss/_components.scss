@@ -1,0 +1,121 @@
+@import 'variables';
+
+// ── Typography ───────────────────────────────────────────────────────────────
+
+.heading {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.125;
+    margin-bottom: 1.5rem;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+}
+
+// ── Button ───────────────────────────────────────────────────────────────────
+
+.button {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: inherit;
+    font-size: 1rem;
+    justify-content: center;
+    padding: 0.5em 1em;
+    text-align: center;
+    white-space: nowrap;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+// ── Dropdown ─────────────────────────────────────────────────────────────────
+
+.dropdown {
+    display: inline-flex;
+    position: relative;
+    vertical-align: top;
+
+    &-trigger {
+        display: flex;
+    }
+
+    &-menu {
+        display: none;
+        left: 0;
+        min-width: 12rem;
+        padding-top: 4px;
+        position: absolute;
+        top: 100%;
+        z-index: 20;
+    }
+
+    &.is-active &-menu {
+        display: block;
+    }
+
+    &-content {
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(10, 10, 10, 0.2);
+        padding: 0.5rem 0;
+    }
+
+    &-item {
+        color: #4a4a4a;
+        display: block;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        padding: 0.5rem 1rem;
+        position: relative;
+        cursor: pointer;
+        text-decoration: none;
+
+        &:hover {
+            background-color: #f5f5f5;
+            color: #0a0a0a;
+        }
+    }
+}
+
+// ── Icon ─────────────────────────────────────────────────────────────────────
+
+.icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    height: 1.5em;
+    width: 1.5em;
+}
+
+// ── Level (used by countdown) ────────────────────────────────────────────────
+
+.level {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &-item {
+        align-items: center;
+        display: flex;
+        flex-basis: auto;
+        flex-grow: 1;
+        flex-shrink: 0;
+        justify-content: center;
+    }
+}

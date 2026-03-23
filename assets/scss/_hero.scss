@@ -1,0 +1,82 @@
+@import 'variables';
+
+.hero {
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: whitesmoke;
+    box-shadow:
+        inset 0 3px 6px rgba(0, 0, 0, 0.16),
+        0 3px 6px rgba(0, 0, 0, 0.23);
+    font-family: $font-raleway;
+
+    &-body {
+        padding: 3rem 1.5rem;
+        align-items: center;
+        display: flex;
+
+        > .container {
+            flex-grow: 1;
+        }
+    }
+
+    &.is-large &-body {
+        padding: 9rem 1.5rem;
+    }
+
+    .subtitle-lead {
+        font-size: 1.75rem !important;
+    }
+
+    .title {
+        font-family: $font-display;
+        font-weight: 700;
+        transform: rotate(-2deg);
+        font-size: 4.5rem;
+        padding-bottom: 5px;
+        color: whitesmoke;
+    }
+
+    .subtitle {
+        padding: 35px;
+        color: whitesmoke;
+        font-size: 1.3rem;
+    }
+
+    .countdown-wrapper {
+        display: flex;
+        justify-content: center;
+    }
+
+    .countdown {
+        padding-top: 35px;
+
+        &.level {
+            display: inline-flex;
+            width: auto;
+        }
+
+        .level-item {
+            flex-grow: 0;
+            padding: 0 0.5rem;
+        }
+
+        .separator {
+            font-size: 2rem;
+            font-weight: 700;
+            padding-bottom: 1.2rem;
+        }
+
+        .heading {
+            color: whitesmoke !important;
+            letter-spacing: 1px;
+        }
+
+        .title {
+            color: whitesmoke !important;
+            font-family: $font-raleway !important;
+            font-size: 3rem !important;
+        }
+    }
+}

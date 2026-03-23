@@ -1,0 +1,60 @@
+@import 'variables';
+
+// ── Text alignment ────────────────────────────────────────────────────────────
+
+.has-text-centered {
+    text-align: center;
+}
+
+// ── Vertical flex helper ──────────────────────────────────────────────────────
+
+.has-vertically-aligned-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+// ── Container ─────────────────────────────────────────────────────────────────
+
+.container {
+    max-width: $container-max;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
+}
+
+// ── Columns grid ──────────────────────────────────────────────────────────────
+
+.columns {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -0.75rem;
+}
+
+.column {
+    flex: 1 1 0;
+    padding: 0.75rem;
+
+    &.is-4 {
+        flex: none;
+        width: 33.3333%;
+    }
+
+    &.is-12 {
+        flex: none;
+        width: 100%;
+    }
+}
+
+@media (max-width: $breakpoint-sm) {
+    .column.is-4 {
+        width: 100%;
+    }
+}
+
+// ── Spacing utility ───────────────────────────────────────────────────────────
+
+.spacing {
+    width: 100%;
+    height: var(--spacing-height, 40px);
+}

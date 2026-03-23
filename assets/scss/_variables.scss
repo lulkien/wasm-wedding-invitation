@@ -1,0 +1,26 @@
+// ── Google Fonts ─────────────────────────────────────────────────────────────
+$font-google-url: "https://fonts.googleapis.com/css?family=Lato|Raleway|Rouge+Script";
+
+// ── Palette ───────────────────────────────────────────────────────────────────
+$color-primary:        #996e6d;
+$color-primary-light:  #c28285;
+$color-primary-border: #bc8887;
+
+$color-bg-light:       ghostwhite;
+$color-bg-pink:        #f4e2e2;
+$color-bg-pink-dark:   #edd2d1;
+
+$color-loading-bg:     #fce4ec;
+$color-loading-text:   #c2185b;
+
+// ── Typography ────────────────────────────────────────────────────────────────
+$font-body:    'Raleway', Tahoma, sans-serif;
+$font-raleway: 'Raleway', sans-serif;
+$font-display: 'Rouge Script', sans-serif;
+
+// ── Layout ────────────────────────────────────────────────────────────────────
+$container-max:  1152px;
+$navbar-height:  50px;
+$section-pad-v:  80px;
+$section-pad-h:  40px;
+$breakpoint-sm:  768px;

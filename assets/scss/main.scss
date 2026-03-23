@@ -1,0 +1,23 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Entry point — order matters:
+//   1. Google Fonts (must be the first CSS rule in output)
+//   2. Variables (no output, must load before anything that uses them)
+//   3. Reset & base
+//   4. Utilities (layout helpers, grid)
+//   5. Components (reusable UI pieces)
+//   6. Overlays
+//   7. Hero
+//   8. Navigation
+//   9. Sections (main content)
+// ─────────────────────────────────────────────────────────────────────────────
+
+@import url("https://fonts.googleapis.com/css?family=Lato|Raleway|Rouge+Script");
+
+@import 'variables';
+@import 'reset';
+@import 'utilities';
+@import 'components';
+@import 'overlays';
+@import 'hero';
+@import 'navigation';
+@import 'sections';
