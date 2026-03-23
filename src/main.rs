@@ -1,7 +1,6 @@
 #![allow(unused)]
 
 use dioxus::{logger::{self, tracing::Level}, prelude::*};
-use dioxus_bulma::prelude::*;
 
 use crate::pages::PageLoader;
 
@@ -18,11 +17,6 @@ fn main() {
 #[component]
 fn App() -> Element {
     rsx! {
-        BulmaProvider {
-            theme: BulmaTheme::Light,
-            load_bulma_css: true,
-
-            PageLoader {  }
-        }
+        PageLoader {}
     }
 }

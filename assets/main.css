@@ -1,5 +1,170 @@
 @import url("https://fonts.googleapis.com/css?family=Lato|Raleway|Rouge+Script");
 
+/*=============================== BULMA REPLACEMENTS =================================*/
+
+.has-text-centered {
+    text-align: center;
+}
+
+.container {
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
+}
+
+.columns {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -0.75rem;
+}
+
+.column {
+    flex: 1 1 0;
+    padding: 0.75rem;
+}
+
+.column.is-4 {
+    flex: none;
+    width: 33.3333%;
+}
+
+.column.is-12 {
+    flex: none;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .column.is-4 {
+        width: 100%;
+    }
+}
+
+.hero-body {
+    padding: 3rem 1.5rem;
+    align-items: center;
+    display: flex;
+}
+
+.hero.is-large .hero-body {
+    padding: 9rem 1.5rem;
+}
+
+.hero-body > .container {
+    flex-grow: 1;
+}
+
+.level {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.level-item {
+    align-items: center;
+    display: flex;
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 0;
+    justify-content: center;
+}
+
+.heading {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.125;
+    margin-bottom: 1.5rem;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+}
+
+.button {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: inherit;
+    font-size: 1rem;
+    justify-content: center;
+    padding: 0.5em 1em;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.button:focus {
+    outline: none;
+}
+
+/* Dropdown */
+.dropdown {
+    display: inline-flex;
+    position: relative;
+    vertical-align: top;
+}
+
+.dropdown-trigger {
+    display: flex;
+}
+
+.dropdown-menu {
+    display: none;
+    left: 0;
+    min-width: 12rem;
+    padding-top: 4px;
+    position: absolute;
+    top: 100%;
+    z-index: 20;
+}
+
+.dropdown.is-active .dropdown-menu {
+    display: block;
+}
+
+.dropdown-content {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(10, 10, 10, 0.2);
+    padding: 0.5rem 0;
+}
+
+.dropdown-item {
+    color: #4a4a4a;
+    display: block;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    padding: 0.5rem 1rem;
+    position: relative;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5;
+    color: #0a0a0a;
+}
+
+.icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    height: 1.5em;
+    width: 1.5em;
+}
+
 /*=============================== LAYOUT & OVERLAYS =================================*/
 
 .invitation-page {
@@ -48,12 +213,16 @@
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-text {
-    font-family: 'Raleway', sans-serif;
+    font-family: "Raleway", sans-serif;
     font-weight: 700;
     font-size: 1.3rem;
     color: #c2185b;
@@ -86,10 +255,12 @@
 }
 
 html {
-    font-family: 'Raleway', Tahoma, sans-serif;
+    font-family: "Raleway", Tahoma, sans-serif;
     width: 100%;
     min-height: 100%;
     scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
 }
 
 /*=============================== HERO =================================*/
@@ -101,12 +272,14 @@ html {
     background-repeat: no-repeat;
 
     color: whitesmoke;
-    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    font-family: 'Raleway', sans-serif;
+    box-shadow:
+        inset 0 3px 6px rgba(0, 0, 0, 0.16),
+        0 3px 6px rgba(0, 0, 0, 0.23);
+    font-family: "Raleway", sans-serif;
 }
 
 .hero .title {
-    font-family: 'Rouge Script', sans-serif;
+    font-family: "Rouge Script", sans-serif;
     font-weight: 700;
     transform: rotate(-2deg);
     font-size: 4.5rem;
@@ -152,7 +325,7 @@ html {
 
 .hero .countdown .title {
     color: whitesmoke !important;
-    font-family: 'Raleway', sans-serif !important;
+    font-family: "Raleway", sans-serif !important;
     font-size: 3rem !important;
 }
 
@@ -168,8 +341,8 @@ html {
     align-items: center;
     height: 50px;
     background: white;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.082);
-    font-family: 'Raleway', sans-serif;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.18);
+    font-family: "Raleway", sans-serif;
 }
 
 .navigation-bar__wrapper {
@@ -204,16 +377,17 @@ html {
 }
 
 .navigation-bar__menu li.is-active a {
-    border-bottom: 2px solid #996E6D;
+    border-bottom: 2px solid #996e6d;
 }
 
 .navigation-bar__menu li a {
-    color: #996E6D;
+    color: #996e6d;
+    text-decoration: none;
 }
 
 .navigation-bar__menu li a:hover {
-    color: #996E6D;
-    transition: all .2s ease-in-out;
+    color: #996e6d;
+    transition: all 0.2s ease-in-out;
     border-bottom: 2px solid #c28285;
 }
 
@@ -232,13 +406,13 @@ html {
 .main-content {
     padding-top: 2rem;
     color: #000;
-    font-family: 'Raleway', sans-serif;
+    font-family: "Raleway", sans-serif;
 }
 
 .main-content .section-title {
-    font-family: 'Raleway', sans-serif;
+    font-family: "Raleway", sans-serif;
     font-weight: 900;
-    color: #996E6D;
+    color: #996e6d;
     text-transform: uppercase;
     font-size: 1.5rem;
     letter-spacing: 0px;
@@ -280,8 +454,8 @@ html {
 }
 
 .main-content .introduce-section .bride-groom-name {
-    font-family: 'Rouge Script', sans-serif;
-    color: #996E6D;
+    font-family: "Rouge Script", sans-serif;
+    color: #996e6d;
     font-size: 4rem;
     letter-spacing: 0px;
     padding-bottom: 6px;
@@ -290,8 +464,8 @@ html {
 
 .main-content .introduce-section .ampersand {
     font-size: 5rem;
-    font-family: 'Rouge Script', sans-serif;
-    color: #996E6D;
+    font-family: "Rouge Script", sans-serif;
+    color: #996e6d;
     line-height: 5rem;
     display: inline-block;
     vertical-align: middle;
@@ -301,9 +475,9 @@ html {
 
 .main-content .time-section {
     padding: 80px 40px;
-    background-color: #F4E2E2;
+    background-color: #f4e2e2;
     font-size: 1.4rem;
-    font-family: 'Raleway', sans-serif;
+    font-family: "Raleway", sans-serif;
 }
 
 .main-content .time-section .is-larger {
@@ -320,9 +494,9 @@ html {
 
 .main-content .location-section {
     padding: 80px 40px;
-    background-color: #EDD2D1;
+    background-color: #edd2d1;
     font-size: 1.4rem;
-    font-family: 'Raleway', sans-serif;
+    font-family: "Raleway", sans-serif;
 }
 
 .main-content .location-section .is-larger {
@@ -349,7 +523,7 @@ html {
 }
 
 .main-content .location-section .button {
-    background-color: #996E6D;
+    background-color: #996e6d;
     color: ghostwhite;
     padding: 15px 30px;
 }
@@ -358,10 +532,10 @@ html {
 
 .main-content .rsvp-section {
     padding: 80px 40px;
-    background-color: #F4E2E2;
+    background-color: #f4e2e2;
     color: black;
     font-size: 1.5rem;
-    font-family: 'Raleway', sans-serif;
+    font-family: "Raleway", sans-serif;
     padding-bottom: 150px;
 }
 
@@ -385,7 +559,7 @@ html {
 }
 
 .main-content .rsvp-section .location-selector .dropdown-button {
-    background-color: #996E6D;
+    background-color: #996e6d;
     color: ghostwhite;
     min-width: 250px;
     padding: 15px 20px;
@@ -401,7 +575,7 @@ html {
 }
 
 .main-content .rsvp-section .confirm-button {
-    background-color: #996E6D;
+    background-color: #996e6d;
     color: ghostwhite;
     padding: 15px 10px;
     font-size: 1.1rem;
@@ -417,16 +591,18 @@ html {
 /*=============================== END MAIN CONTENT =================================*/
 
 body {
+    margin: 0;
+    padding: 0;
     background-color: ghostwhite;
 }
 
 ::-webkit-scrollbar {
     width: 8px;
-    background-color: #F4E2E2;
+    background-color: #f4e2e2;
 }
 
 ::-webkit-scrollbar-thumb {
-    box-shadow: inset 0 0 6px #996E6D;
-    -webkit-box-shadow: inset 0 0 6px #996E6D;
-    background-color: #BC8887;
+    box-shadow: inset 0 0 6px #996e6d;
+    -webkit-box-shadow: inset 0 0 6px #996e6d;
+    background-color: #bc8887;
 }

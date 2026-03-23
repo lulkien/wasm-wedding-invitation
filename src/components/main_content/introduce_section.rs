@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 use dioxus::prelude::*;
-use dioxus_bulma::prelude::*;
+
 
 use crate::{
     components::common::{DividerLeaves, Spacing, SECTION_IMAGE_END},

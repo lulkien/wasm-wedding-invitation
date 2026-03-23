@@ -1,6 +1,5 @@
 use crate::database::Person;
 use dioxus::prelude::*;
-use dioxus_bulma::prelude::*;
 
 mod introduce_section;
 mod location_section;

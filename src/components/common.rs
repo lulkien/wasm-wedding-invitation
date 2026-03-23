@@ -1,7 +1,6 @@
 #![allow(unused)]
 
 use dioxus::prelude::*;
-use dioxus_bulma::{components::ColumnSize, prelude::*};
 
 const SECTION_IMAGE_DIVIDER: Asset = asset!("/assets/divider-leaves.webp");
 pub const SECTION_IMAGE_END: Asset = asset!("/assets/divider-flowers-leaves.webp");
@@ -29,11 +28,10 @@ pub struct SectionTitleProps {
 #[component]
 pub fn SectionTitle(props: SectionTitleProps) -> Element {
     rsx! {
-        Column {
-            size: ColumnSize::Twelve,
-
+        div {
+            class: "column is-12",
             h1 {
-                class: "section-title has-text-centered title",
+                class: "section-title has-text-centered",
                 "{props.name}"
             }
         }

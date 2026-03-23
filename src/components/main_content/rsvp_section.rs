@@ -1,5 +1,4 @@
 use dioxus::prelude::*;
-use dioxus_bulma::{components::ColumnSize, prelude::*};
 
 use crate::{
     components::common::{SectionTitle, Spacing},
@@ -28,9 +27,10 @@ pub(super) fn RsvpSection(get_user_data: Signal<Option<Person>>) -> Element {
         section {
             id: "rsvp",
             class: "section-default rsvp-section has-text-centered has-vertically-aligned-content",
-            Container {
+            div {
+                class: "container",
                 SectionTitle { name: "RSVP" }
-                Message {  }
+                Message {}
                 ConfirmationDropdown { dropdown_active, select_location }
                 ConfirmButton { select_location, saved_location, get_user_data }
                 Contact { select_location }
@@ -45,14 +45,14 @@ fn Message() -> Element {
         p {
             class: "message",
             "It would be an honor to have you join us and offer your blessing."
-            br { }
-            br { }
+            br {}
+            br {}
             "Shuttles will depart from FPT Tower and Lotte Mall West Lake."
-            br { }
-            br { }
+            br {}
+            br {}
             "Please let us know if you can attend; we look forward to celebrating!"
-            br { }
-            br { }
+            br {}
+            br {}
             "If you can't make it, we'll miss you and hope to see you soon."
         }
     }
@@ -63,63 +63,80 @@ fn ConfirmationDropdown(
     dropdown_active: Signal<bool>,
     select_location: Signal<DepartLocation>,
 ) -> Element {
+    let dropdown_class = if dropdown_active() {
+        "dropdown is-active location-selector"
+    } else {
+        "dropdown location-selector"
+    };
+
+    let label = match select_location() {
+        DepartLocation::None => "I want to depart from...",
+        DepartLocation::Fpt => "I want to depart from FPT Tower",
+        DepartLocation::Handico => "I want to depart from Handico Tower",
+        DepartLocation::Lotte => "I want to depart from Lotte Mall West Lake",
+        DepartLocation::MyVehicle => "I will use my own vehicle",
+        DepartLocation::Nah => "I can't make it",
+    };
+
     rsx! {
-        Dropdown {
-            class: "location-selector",
-            active: dropdown_active(),
-            DropdownTrigger {
-                onclick: move |_| dropdown_active.set(!dropdown_active()),
-                Button {
-                    class: "dropdown-button",
-                    match select_location() {
-                        DepartLocation::None => "I want to depart from...",
-                        DepartLocation::Fpt => "I want to depart from FPT Tower",
-                        DepartLocation::Handico => "I want to depart from Handico Tower",
-                        DepartLocation::Lotte => "I want to depart from Lotte Mall West Lake",
-                        DepartLocation::MyVehicle => "I will use my own vehicle",
-                        DepartLocation::Nah => "I can't make it",
-                    }
+        div {
+            class: "{dropdown_class}",
+            div {
+                class: "dropdown-trigger",
+                button {
+                    class: "button dropdown-button",
+                    onclick: move |_| dropdown_active.set(!dropdown_active()),
+                    "{label}"
                     span {
                         class: "icon is-small",
                         if dropdown_active() { "▲" } else { "▼" }
                     }
                 }
             }
-            DropdownMenu {
-                DropdownItem {
-                    onclick: move |_| {
-                        dropdown_active.set(false);
-                        select_location.set(DepartLocation::Fpt);
-                    },
-                    "FPT Tower"
-                }
-                DropdownItem {
-                    onclick: move |_| {
-                        dropdown_active.set(false);
-                        select_location.set(DepartLocation::Handico);
-                    },
-                    "Handico Tower"
-                }
-                DropdownItem {
-                    onclick: move |_| {
-                        dropdown_active.set(false);
-                        select_location.set(DepartLocation::Lotte);
-                    },
-                    "Lotte Mall West Lake"
-                }
-                DropdownItem {
-                    onclick: move |_| {
-                        dropdown_active.set(false);
-                        select_location.set(DepartLocation::MyVehicle);
-                    },
-                    "I will use my own vehicle"
-                }
-                DropdownItem {
-                    onclick: move |_| {
-                        dropdown_active.set(false);
-                        select_location.set(DepartLocation::Nah);
-                    },
-                    "I can't make it"
+            div {
+                class: "dropdown-menu",
+                div {
+                    class: "dropdown-content",
+                    a {
+                        class: "dropdown-item",
+                        onclick: move |_| {
+                            dropdown_active.set(false);
+                            select_location.set(DepartLocation::Fpt);
+                        },
+                        "FPT Tower"
+                    }
+                    a {
+                        class: "dropdown-item",
+                        onclick: move |_| {
+                            dropdown_active.set(false);
+                            select_location.set(DepartLocation::Handico);
+                        },
+                        "Handico Tower"
+                    }
+                    a {
+                        class: "dropdown-item",
+                        onclick: move |_| {
+                            dropdown_active.set(false);
+                            select_location.set(DepartLocation::Lotte);
+                        },
+                        "Lotte Mall West Lake"
+                    }
+                    a {
+                        class: "dropdown-item",
+                        onclick: move |_| {
+                            dropdown_active.set(false);
+                            select_location.set(DepartLocation::MyVehicle);
+                        },
+                        "I will use my own vehicle"
+                    }
+                    a {
+                        class: "dropdown-item",
+                        onclick: move |_| {
+                            dropdown_active.set(false);
+                            select_location.set(DepartLocation::Nah);
+                        },
+                        "I can't make it"
+                    }
                 }
             }
         }
@@ -131,10 +148,16 @@ fn Contact(select_location: Signal<DepartLocation>) -> Element {
     rsx! {
         div {
             match select_location() {
-                DepartLocation::None => rsx! { },
-                DepartLocation::Fpt => rsx! { ZaloGroup { src: FPT_QR, url: "https://zalo.me/g/en42usc62wqiernfxxcn".to_string() } },
-                DepartLocation::Handico => rsx! { ZaloGroup { src: FPT_QR, url: "https://zalo.me/g/en42usc62wqiernfxxcn".to_string() } },
-                DepartLocation::Lotte => rsx! { ZaloGroup { src: LOTTE_QR, url: "https://zalo.me/g/wxrlhr776".to_string() } },
+                DepartLocation::None => rsx! {},
+                DepartLocation::Fpt => rsx! {
+                    ZaloGroup { src: FPT_QR, url: "https://zalo.me/g/en42usc62wqiernfxxcn".to_string() }
+                },
+                DepartLocation::Handico => rsx! {
+                    ZaloGroup { src: FPT_QR, url: "https://zalo.me/g/en42usc62wqiernfxxcn".to_string() }
+                },
+                DepartLocation::Lotte => rsx! {
+                    ZaloGroup { src: LOTTE_QR, url: "https://zalo.me/g/wxrlhr776".to_string() }
+                },
                 DepartLocation::MyVehicle => rsx! {
                     p {
                         class: "rsvp-contact-message",
@@ -191,9 +214,8 @@ fn ConfirmButton(
     let is_none = matches!(select_location(), DepartLocation::None);
     let is_saved = select_location() == saved_location();
 
-    // nothing selected or already saved with current value -> hide
     if is_none || is_saved {
-        return rsx! { div { } };
+        return rsx! { div {} };
     }
 
     let onclick = move |_| {
@@ -211,8 +233,8 @@ fn ConfirmButton(
     };
 
     rsx! {
-        Button {
-            class: "confirm-button",
+        button {
+            class: "button confirm-button",
             onclick,
             "Confirm"
         }

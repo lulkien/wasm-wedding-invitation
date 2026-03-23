@@ -1,7 +1,6 @@
 #![allow(unused)]
 
 use dioxus::prelude::*;
-use dioxus_bulma::{components::ColumnSize, prelude::*};
 
 use crate::components::common::SectionTitle;
 use crate::config::wedding_config;
@@ -13,11 +12,12 @@ pub(super) fn LocationSection() -> Element {
             id: "location",
             class: "section-default location-section has-text-centered has-vertically-aligned-content",
 
-            Container {
+            div {
+                class: "container",
                 SectionTitle { name: "Location" }
-                Address {  }
-                Map {  }
-                MapButton {  }
+                Address {}
+                Map {}
+                MapButton {}
             }
         }
     }
@@ -31,7 +31,7 @@ fn Address() -> Element {
             class: "address has-text-centered",
             strong { "Venue: " }
             "{config.venue.name}"
-            br {  }
+            br {}
             strong { "Address: " }
             "{config.venue.address}"
         }
@@ -58,7 +58,8 @@ fn MapButton() -> Element {
     let config = wedding_config();
     let url = config.venue.maps_directions_url.clone();
     rsx! {
-        Button {
+        button {
+            class: "button",
             onclick: move |_| {
                 webbrowser::open(&url);
             },

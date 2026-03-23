@@ -1,7 +1,6 @@
 #![allow(unused)]
 
 use dioxus::prelude::*;
-use dioxus_bulma::{components::ColumnSize, prelude::*};
 
 use crate::components::common::{SectionTitle, Spacing};
 use crate::config::wedding_config;
@@ -9,13 +8,14 @@ use crate::config::wedding_config;
 #[component]
 pub(super) fn TimeSection() -> Element {
     rsx! {
-        section { 
+        section {
             id: "time",
             class: "section-default time-section has-text-centered has-vertically-aligned-content",
 
-            Container {
+            div {
+                class: "container",
                 SectionTitle { name: "Time" }
-                Calendar {  }
+                Calendar {}
             }
             Spacing { space: "40px" }
         }
@@ -25,11 +25,11 @@ pub(super) fn TimeSection() -> Element {
 #[component]
 fn Calendar() -> Element {
     rsx! {
-        Columns {
-            multiline: true,
-            DateTimeColumn {  }
-            ReceptionTime {  }
-            CeremonyTime {  }
+        div {
+            class: "columns is-multiline",
+            DateTimeColumn {}
+            ReceptionTime {}
+            CeremonyTime {}
         }
     }
 }
@@ -38,9 +38,8 @@ fn Calendar() -> Element {
 fn DateTimeColumn() -> Element {
     let config = wedding_config();
     rsx! {
-        Column {
-            class: "has-vertically-aligned-content",
-            size: ColumnSize::Four,
+        div {
+            class: "column is-4 has-vertically-aligned-content",
             div { class: "has-text-centered", "{config.ceremony.day_of_week}" }
             div { class: "day-number has-text-centered", "{config.ceremony.day_number}" }
             div { class: "has-text-centered", "{config.ceremony.month_year}" }
@@ -52,13 +51,12 @@ fn DateTimeColumn() -> Element {
 fn ReceptionTime() -> Element {
     let config = wedding_config();
     rsx! {
-        Column {
-            class: "has-vertically-aligned-content",
-            size: ColumnSize::Four,
+        div {
+            class: "column is-4 has-vertically-aligned-content",
             p {
                 class: "is-larger has-text-centered",
                 "Reception:"
-                br {  }
+                br {}
                 "{config.ceremony.reception_time}"
             }
         }
@@ -69,16 +67,14 @@ fn ReceptionTime() -> Element {
 fn CeremonyTime() -> Element {
     let config = wedding_config();
     rsx! {
-        Column {
-            class: "has-vertically-aligned-content",
-            size: ColumnSize::Four,
+        div {
+            class: "column is-4 has-vertically-aligned-content",
             p {
                 class: "is-larger has-text-centered",
                 "Ceremony:"
-                br {  }
+                br {}
                 "{config.ceremony.ceremony_time}"
             }
         }
     }
 }
-

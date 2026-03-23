@@ -1,5 +1,4 @@
 use dioxus::prelude::*;
-use dioxus_bulma::components::Title;
 
 use invitation::Invitation;
 use page_not_found::PageNotFound;

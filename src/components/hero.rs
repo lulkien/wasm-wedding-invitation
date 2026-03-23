@@ -1,6 +1,5 @@
 use chrono::{DateTime, Duration, Utc};
 use dioxus::prelude::*;
-use dioxus_bulma::components::Container;
 use gloo_timers::callback::Interval;
 
 use crate::config::wedding_config;
@@ -31,8 +30,8 @@ pub fn Hero() -> Element {
             background_image: "url({BG_IMAGE})",
             div {
                 class: "hero-body",
-                Container {
-                    class: "has-text-centered",
+                div {
+                    class: "container has-text-centered",
                     Subtitle {  }
                     Title { title: config.couple.title.clone() }
                     DateAndTime {

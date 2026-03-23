@@ -1,5 +1,4 @@
 use dioxus::prelude::*;
-use dioxus_bulma::components::Title;
 
 use crate::{
     components::{hero, main_content, navigation_bar},
@@ -37,16 +36,16 @@ pub(super) fn Invitation(uid: String) -> Element {
     rsx! {
         div {
             class: "invitation-page",
-            hero::Hero {  }
-            navigation_bar::NavigationBar {  }
+            hero::Hero {}
+            navigation_bar::NavigationBar {}
             main_content::MainContent { get_user_data }
 
             if loading() {
-                LoadingOverlay {  }
+                LoadingOverlay {}
             }
 
             if not_found() {
-                NotFoundOverlay {  }
+                NotFoundOverlay {}
             }
         }
     }
