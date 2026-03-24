@@ -313,6 +313,3 @@ rustup target add wasm32-unknown-unknown
 ```sh
 dx serve --port 8081
 ```
-```
-
-Now let me write the main README:
