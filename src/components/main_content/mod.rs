@@ -1,6 +1,7 @@
 use crate::database::Person;
 use dioxus::prelude::*;
 
+mod gift_section;
 mod introduce_section;
 mod location_section;
 mod rsvp_section;
@@ -12,9 +13,10 @@ pub fn MainContent(get_user_data: Signal<Option<Person>>) -> Element {
         div {
             class: "main-content",
             introduce_section::IntroduceSection { get_user_data }
-            time_section::TimeSection {  }
-            location_section::LocationSection {  }
+            time_section::TimeSection {}
+            location_section::LocationSection {}
             rsvp_section::RsvpSection { get_user_data }
+            gift_section::GiftSection {}
         }
     }
 }

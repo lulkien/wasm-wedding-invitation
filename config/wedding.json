@@ -20,5 +20,11 @@
     "groom_name": "Luu Hoang Kien",
     "bride_name": "Pham Thi Hang",
     "title": "Hoang Kien & Pham Hang"
+  },
+  "gift": {
+    "message": "Your presence is already the greatest gift. However, if you'd like to contribute to our new journey together, we would be truly grateful.",
+    "bank": "Vietcombank (VCB)",
+    "account_number": "1234567890",
+    "account_holder": "Luu Hoang Kien"
   }
 }

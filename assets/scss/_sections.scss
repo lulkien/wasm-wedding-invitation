@@ -32,6 +32,16 @@
         padding-top: 0;
     }
 
+    // ── Shared QR code (used by RSVP and Gift sections) ───────────────────────
+    .qr-code {
+        width: 300px;
+        height: 305px;
+        margin-bottom: 30px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     // ── Introduce ─────────────────────────────────────────────────────────────
     .introduce-section {
         padding-bottom: $section-pad-v;
@@ -171,11 +181,65 @@
             font-size: 1.1rem;
             margin-left: 20px;
         }
+    }
 
-        .qr-code {
-            width: 300px !important;
-            height: 305px !important;
-            margin-bottom: 30px;
+    // ── Gift toggle ────────────────────────────────────────────────────────────
+    .gift-section-wrapper {
+        background-color: $color-bg-pink;
+    }
+
+    .gift-toggle {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 24px;
+
+        &__btn {
+            background-color: $color-primary;
+            color: ghostwhite;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+
+            &:hover {
+                background-color: darken($color-primary, 10%);
+                transform: scale(1.1);
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    // ── Gift section ──────────────────────────────────────────────────────────
+    .gift-section {
+        padding: $section-pad-v $section-pad-h;
+        background-color: $color-bg-pink-dark;
+        font-family: $font-raleway;
+        text-align: center;
+
+        .gift-message {
+            font-size: 1rem;
+            max-width: 560px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .gift-account-info {
+            font-size: 1rem;
+            line-height: 1.9;
+
+            strong {
+                font-size: 1.05rem;
+                color: $color-primary;
+            }
         }
     }
 }

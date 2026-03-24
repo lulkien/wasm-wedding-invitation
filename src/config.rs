@@ -5,6 +5,7 @@ pub struct WeddingConfig {
     pub ceremony: CeremonyConfig,
     pub venue: VenueConfig,
     pub couple: CoupleConfig,
+    pub gift: GiftConfig,
 }
 
 #[derive(Clone, Deserialize)]
@@ -33,6 +34,14 @@ pub struct CoupleConfig {
     pub groom_name: String,
     pub bride_name: String,
     pub title: String,
+}
+
+#[derive(Clone, Deserialize)]
+pub struct GiftConfig {
+    pub message: String,
+    pub bank: String,
+    pub account_number: String,
+    pub account_holder: String,
 }
 
 fn load_config() -> WeddingConfig {
