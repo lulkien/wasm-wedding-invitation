@@ -88,8 +88,8 @@ Edit `config/wedding.json` to customise all ceremony details — no code changes
   "venue": {
     "name": "Near Doc Suoi Roundabout",
     "address": "Trieu Tien Village, Son Nam Ward, Hung Yen Province",
-    "maps_embed_url": "https://...",
-    "maps_directions_url": "https://maps.app.goo.gl/..."
+    "maps_embed_url": "YOUR_GOOGLE_MAPS_EMBED_URL",
+    "maps_directions_url": "YOUR_GOOGLE_MAPS_LINK"
   },
   "couple": {
     "groom_name": "Luu Hoang Kien",
@@ -105,21 +105,27 @@ See [`config/README.md`](config/README.md) for a full field reference.
 
 ## Database
 
-Guest data is stored in a SQLite database with two tables:
+Guest data is stored in a SQLite database with three tables:
 
 ```sql
 CREATE TABLE people (
-    uid      TEXT PRIMARY KEY,  -- 8-character hex ID
-    name     TEXT NOT NULL,
+    uid     TEXT NOT NULL UNIQUE PRIMARY KEY,
     greeting TEXT NOT NULL,
-    line1    TEXT NOT NULL,
-    line2    TEXT,
-    line3    TEXT
+    name    TEXT NOT NULL,
+    line1   TEXT NOT NULL,
+    line2   TEXT,
+    line3   TEXT,
+    desc    TEXT
+);
+
+CREATE TABLE location_map (
+    location_id  INTEGER NOT NULL UNIQUE PRIMARY KEY,
+    location_name TEXT NOT NULL
 );
 
 CREATE TABLE location (
-    uid         TEXT PRIMARY KEY REFERENCES people(uid),
-    depart_from INTEGER NOT NULL DEFAULT 0
+    uid TEXT NOT NULL UNIQUE PRIMARY KEY,
+    depart_from INTEGER
 );
 ```
 
@@ -143,4 +149,12 @@ dx serve
 
 ## License
 
-[MIT](LICENSE)
+[Unlicense](LICENSE) - Public domain dedication
+
+This is free and unencumbered software released into the public domain.
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+For more information, please refer to <https://unlicense.org>
