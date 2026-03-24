@@ -21,6 +21,14 @@
     "bride_name": "Pham Thi Hang",
     "title": "Hoang Kien & Pham Hang"
   },
+  "rsvp": {
+    "message": [
+      "It would be an honor to have you join us and offer your blessing.",
+      "Shuttles will depart from FPT Tower and Lotte Mall West Lake.",
+      "Please let us know if you can attend; we look forward to celebrating!",
+      "If you can't make it, we'll miss you and hope to see you soon."
+    ]
+  },
   "gift": {
     "message": "Your presence is already the greatest gift. However, if you'd like to contribute to our new journey together, we would be truly grateful.",
     "bank": "Vietcombank (VCB)",

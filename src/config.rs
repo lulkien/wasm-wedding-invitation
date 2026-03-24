@@ -5,6 +5,7 @@ pub struct WeddingConfig {
     pub ceremony: CeremonyConfig,
     pub venue: VenueConfig,
     pub couple: CoupleConfig,
+    pub rsvp: RsvpConfig,
     pub gift: GiftConfig,
 }
 
@@ -34,6 +35,11 @@ pub struct CoupleConfig {
     pub groom_name: String,
     pub bride_name: String,
     pub title: String,
+}
+
+#[derive(Clone, Deserialize)]
+pub struct RsvpConfig {
+    pub message: Vec<String>,
 }
 
 #[derive(Clone, Deserialize)]

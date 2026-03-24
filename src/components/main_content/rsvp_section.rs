@@ -1,5 +1,7 @@
 use dioxus::prelude::*;
 
+use crate::config::wedding_config;
+
 use crate::{
     components::common::{SectionTitle, Spacing},
     database::{update_location, DepartLocation, Person},
@@ -41,19 +43,18 @@ pub(super) fn RsvpSection(get_user_data: Signal<Option<Person>>) -> Element {
 
 #[component]
 fn Message() -> Element {
+    let config = wedding_config();
+    let lines = &config.rsvp.message;
     rsx! {
         p {
             class: "message",
-            "It would be an honor to have you join us and offer your blessing."
-            br {}
-            br {}
-            "Shuttles will depart from FPT Tower and Lotte Mall West Lake."
-            br {}
-            br {}
-            "Please let us know if you can attend; we look forward to celebrating!"
-            br {}
-            br {}
-            "If you can't make it, we'll miss you and hope to see you soon."
+            for (i, line) in lines.iter().enumerate() {
+                "{line}"
+                if i < lines.len() - 1 {
+                    br {}
+                    br {}
+                }
+            }
         }
     }
 }
