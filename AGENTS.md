@@ -263,3 +263,24 @@ The initial UI rendered by the component on the client must be identical to the 
 
 * Use the `use_server_future` hook instead of `use_resource`. It runs the future on the server, serializes the result, and sends it to the client, ensuring the client has the data immediately for its first render.
 * Any code that relies on browser-specific APIs (like accessing `localStorage`) must be run *after* hydration. Place this code inside a `use_effect` hook.
+
+# Code Verification
+
+**After making code changes, always run `cargo check` to verify:**
+- Detects compilation errors early
+- Ensures code is valid before committing
+- Fix any errors before proceeding
+
+**After code changes:**
+1. Run `cargo check`
+2. Fix any errors that appear
+3. Re-run `cargo check` until clean
+4. Then proceed with commit
+
+# Commit Behavior
+
+**Before committing changes to Git, always ask the user to confirm.**
+- Show them what changed using `git status` and `git diff`
+- Present the commit message you plan to use
+- Wait for explicit confirmation before running `git add` and `git commit`
+- This prevents accidental commits and ensures alignment on changes
