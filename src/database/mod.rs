@@ -71,11 +71,7 @@ mod server {
     use tokio::sync::OnceCell;
 
 
-    #[cfg(debug_assertions)]
-    const DB_URL: &str = "ws://127.0.0.1:8000";
-
-    #[cfg(not(debug_assertions))]
-    const DB_URL: &str = "ws://127.0.0.1:8000";
+    const DB_URL: &str = "127.0.0.1:8000";
 
     const DB_NS: &str = "wedding";
     const DB_NAME: &str = "wedding";
@@ -182,7 +178,7 @@ mod server {
                 .to_string()
         } else {
             format!(
-                "UPDATE people SET depart_from = type::thing('location_map', {}) WHERE uid = $uid",
+                "UPDATE people SET depart_from = type::record('location_map', {}) WHERE uid = $uid",
                 location as i64
             )
         };
