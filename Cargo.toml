@@ -8,9 +8,10 @@ edition = "2021"
 [dependencies]
 chrono = { version = "0.4.44", features = ["serde"] }
 dioxus = { version = "0.7.3", features = ["fullstack", "logger", "router"] }
-gloo-timers = "0.3"
+gloo-timers = "0.4"
 
-rusqlite = { version = "0.39.0", features = ["bundled"] }
+surrealdb = { version = "3", features = ["protocol-ws"], optional = true }
+tokio     = { version = "1", features = ["sync"],        optional = true }
 serde = "1.0.228"
 serde_json = "1.0"
 webbrowser = "1.2.0"
@@ -18,9 +19,26 @@ webbrowser = "1.2.0"
 [build-dependencies]
 sass-rs = "0.2"
 
+# Speed up debug builds by optimising the heavy C/crypto crates that
+# surrealdb pulls in, without slowing down incremental Rust compilation.
+[profile.dev.package.aws-lc-sys]
+opt-level = 2
+
+[profile.dev.package.aws-lc-rs]
+opt-level = 2
+
+[profile.dev.package.ring]
+opt-level = 2
+
+[profile.dev.package.surrealdb-core]
+opt-level = 1
+
+[profile.dev.package.flatbuffers]
+opt-level = 1
+
 [features]
 default = ["web"]
 desktop = ["dioxus/desktop"]
 mobile = ["dioxus/mobile"]
-server = ["dioxus/server"]
+server = ["dioxus/server", "dep:surrealdb", "dep:tokio"]
 web = ["dioxus/web"]

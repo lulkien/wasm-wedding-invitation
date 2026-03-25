@@ -127,5 +127,5 @@ fn NotFoundOverlay() -> Element {
 
 #[post("/api/getUserData")]
 async fn load_data(uid: String) -> Result<Option<Person>, ServerFnError> {
-    Ok(database::query_user(uid.as_str()))
+    Ok(database::query_user(uid.as_str()).await)
 }

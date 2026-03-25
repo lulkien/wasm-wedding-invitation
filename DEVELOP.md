@@ -71,7 +71,7 @@ wasm-wedding-invitation/
 │   ├── main.rs                 ← app entry point
 │   ├── config.rs               ← loads wedding.json at compile time
 │   ├── database/
-│   │   └── mod.rs              ← SQLite queries (server-only)
+│   │   └── mod.rs              ← SurrealDB queries (server-only)
 │   ├── components/
 │   │   ├── hero.rs             ← hero + live countdown
 │   │   ├── navigation_bar.rs   ← sticky top nav
@@ -126,71 +126,72 @@ Any `cargo build` or `dx serve` rerun will recompile SCSS if any file under
 
 ## Database
 
-The app uses **SQLite** via `rusqlite` with a bundled build (no system SQLite needed).
+The app uses **SurrealDB** as an external server process, connected over WebSocket
+from the Dioxus server binary. See [SURREALDB.md](SURREALDB.md) for the full
+native installation and deployment guide.
 
-### Path
+### Connection constants
 
-| Build | Path |
-|---|---|
-| Debug (`cargo build`) | hardcoded in `src/database/mod.rs` — change to your local absolute path |
-| Release (`cargo build --release`) | `/srv/wedding/database.db` |
+All connection details live in `src/database/mod.rs` under `#[cfg(feature = "server")]`:
 
-> **Note:** The debug path is an absolute path in `database/mod.rs`. Update
-> `DATABASE_PATH` for `#[cfg(debug_assertions)]` to match your machine before running.
+| Constant | Default | Description |
+|---|---|---|
+| `DB_URL` | `ws://127.0.0.1:8000` | WebSocket URL of the SurrealDB instance |
+| `DB_NS` | `wedding` | Namespace |
+| `DB_NAME` | `wedding` | Database name |
+| `DB_USER` | `root` | Username |
+| `DB_PASS` | `secret` | Password |
+
+The connection is initialised lazily on first use via `tokio::sync::OnceCell` — no
+explicit startup step required.
+
+### Start SurrealDB (development)
+
+```sh
+surreal start --user root --password secret --bind 127.0.0.1:8000 memory
+```
 
 ### Schema
 
+Run once against a fresh instance:
+
 ```sql
-CREATE TABLE people (
-    uid      TEXT PRIMARY KEY,   -- 8-char lowercase hex, e.g. "a1b2c3d4"
-    name     TEXT NOT NULL,
-    greeting TEXT NOT NULL,      -- e.g. "Dear", "My dearest"
-    line1    TEXT NOT NULL,
-    line2    TEXT,
-    line3    TEXT
-);
+-- Departure location lookup
+DEFINE TABLE location_map SCHEMAFULL;
+DEFINE FIELD location_id   ON location_map TYPE int;
+DEFINE FIELD location_name ON location_map TYPE string;
 
-CREATE TABLE location (
-    uid         TEXT PRIMARY KEY REFERENCES people(uid),
-    depart_from INTEGER NOT NULL DEFAULT 0
-);
+CREATE location_map:1 SET location_id = 1, location_name = 'FPT Tower';
+CREATE location_map:2 SET location_id = 2, location_name = 'Handico Tower';
+CREATE location_map:3 SET location_id = 3, location_name = 'Lotte Mall West Lake';
+CREATE location_map:4 SET location_id = 4, location_name = 'I use my own vehicle';
+CREATE location_map:5 SET location_id = 5, location_name = 'I\'ll pass';
+
+-- Guest table
+DEFINE TABLE people SCHEMAFULL;
+DEFINE FIELD uid          ON people TYPE string ASSERT $value != NONE;
+DEFINE FIELD name         ON people TYPE string;
+DEFINE FIELD greeting     ON people TYPE string;
+DEFINE FIELD line1        ON people TYPE string;
+DEFINE FIELD line2        ON people TYPE option<string>;
+DEFINE FIELD line3        ON people TYPE option<string>;
+DEFINE FIELD desc         ON people TYPE option<string>;
+DEFINE FIELD depart_from  ON people TYPE option<record<location_map>>;
 ```
 
-### `depart_from` values
+### `depart_from` record links
 
-| Value | Meaning |
-|---|---|
-| `0` | Not decided yet (default) |
-| `1` | FPT Tower shuttle |
-| `2` | Handico Tower shuttle |
-| `3` | Lotte Mall West Lake shuttle |
-| `4` | Own vehicle |
-| `5` | Can't attend |
+`depart_from` is a SurrealDB record link to `location_map`, not a plain integer.
+`NONE` means the guest has not yet chosen a departure point.
 
-### Create the database
-
-```sh
-sqlite3 database.db < schema.sql
-```
-
-Or manually:
-
-```sh
-sqlite3 database.db "
-CREATE TABLE people (
-    uid TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    greeting TEXT NOT NULL,
-    line1 TEXT NOT NULL,
-    line2 TEXT,
-    line3 TEXT
-);
-CREATE TABLE location (
-    uid TEXT PRIMARY KEY REFERENCES people(uid),
-    depart_from INTEGER NOT NULL DEFAULT 0
-);
-"
-```
+| Record | `location_id` | Meaning |
+|---|---|---|
+| `NONE` | — | Not decided yet (default) |
+| `location_map:1` | `1` | FPT Tower shuttle |
+| `location_map:2` | `2` | Handico Tower shuttle |
+| `location_map:3` | `3` | Lotte Mall West Lake shuttle |
+| `location_map:4` | `4` | Own vehicle |
+| `location_map:5` | `5` | Can't attend |
 
 ### Add a guest
 
@@ -201,20 +202,19 @@ openssl rand -hex 4
 # e.g. a1b2c3d4
 ```
 
-Then insert:
+Then insert via the SurrealDB CLI (record key = uid):
 
 ```sql
-INSERT INTO people (uid, name, greeting, line1, line2, line3)
-VALUES (
-    'a1b2c3d4',
-    'Nguyen Van A',
-    'Dear',
-    'We joyfully invite you to share in the celebration of our wedding.',
-    'Your presence would mean the world to us.',
-    NULL
-);
-
-INSERT INTO location (uid, depart_from) VALUES ('a1b2c3d4', 0);
+CREATE people:a1b2c3d4 CONTENT {
+    uid:         "a1b2c3d4",
+    name:        "Nguyen Van A",
+    greeting:    "Dear",
+    line1:       "We joyfully invite you to share in the celebration of our wedding.",
+    line2:       "Your presence would mean the world to us.",
+    line3:       NONE,
+    desc:        "optional internal note",
+    depart_from: NONE
+};
 ```
 
 The guest's unique invitation URL is:

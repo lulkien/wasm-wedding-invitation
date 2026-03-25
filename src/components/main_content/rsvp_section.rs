@@ -4,8 +4,11 @@ use crate::config::wedding_config;
 
 use crate::{
     components::common::{SectionTitle, Spacing},
-    database::{update_location, DepartLocation, Person},
+    database::{DepartLocation, Person},
 };
+
+#[cfg(feature = "server")]
+use crate::database::update_location;
 
 const FPT_QR: Asset = asset!("/assets/fpt.webp");
 const LOTTE_QR: Asset = asset!("/assets/lotte.webp");
@@ -202,7 +205,7 @@ pub async fn update_location_api(
     uid: String,
     location: DepartLocation,
 ) -> Result<(), ServerFnError> {
-    update_location(uid.as_str(), location).inspect_err(|e| warn!("Update location error: {e}"));
+    update_location(uid.as_str(), location).await.inspect_err(|e| warn!("Update location error: {e}"));
     Ok(())
 }
 
