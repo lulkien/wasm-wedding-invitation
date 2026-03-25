@@ -65,6 +65,7 @@ mod server {
     use surrealdb::{
         engine::remote::ws::{Client, Ws},
         opt::auth::Root,
+        types::SurrealValue,
         Surreal,
     };
     use tokio::sync::OnceCell;
@@ -91,8 +92,8 @@ mod server {
                     .await
                     .expect("Failed to connect to SurrealDB");
                 DB.signin(Root {
-                    username: DB_USER,
-                    password: DB_PASS,
+                    username: DB_USER.to_string(),
+                    password: DB_PASS.to_string(),
                 })
                 .await
                 .expect("Failed to sign in to SurrealDB");
@@ -110,7 +111,7 @@ mod server {
     }
 
     /// Row returned by SurrealDB — depart_from is stored as an integer.
-    #[derive(Deserialize)]
+    #[derive(SurrealValue)]
     struct PersonRow {
         uid: String,
         name: String,
