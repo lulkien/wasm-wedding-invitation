@@ -22,7 +22,7 @@ A personalised, fullstack wedding invitation web app built with [Dioxus 0.7](htt
 | UI framework | [Dioxus 0.7](https://dioxuslabs.com) (fullstack, WASM) |
 | Language | Rust |
 | Styling | SCSS → CSS via [`sass-rs`](https://crates.io/crates/sass-rs) |
-| Database | SurrealDB via [`surrealdb`](https://crates.io/crates/surrealdb) (bundled) |
+| Database | SurrealDB via [`surrealdb`](https://crates.io/crates/surrealdb) |
 | Routing | Dioxus Router |
 | Async timers | [`gloo-timers`](https://crates.io/crates/gloo-timers) |
 | Browser open | [`webbrowser`](https://crates.io/crates/webbrowser) |
@@ -108,23 +108,6 @@ See [`config/README.md`](config/README.md) for a full field reference.
 Guest data is stored in a SurrealDB database. For schema details, see `SURREALDB.md`
 
 Refer to `SURREALDB.md` for the full schema definition.
-```
-
-Each guest's unique invitation URL is `/invitation/<uid>` where `uid` is the 8-character hex key from the `people` table.
-
----
-
-## Quick Start
-
-See [DEVELOP.md](DEVELOP.md) for the full development guide.
-
-```bash
-# Install the Dioxus CLI
-curl -sSL http://dioxus.dev/install.sh | sh
-
-# Run in development mode
-dx serve
-```
 
 ---
 

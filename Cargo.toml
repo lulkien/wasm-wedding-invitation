@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 chrono = { version = "0.4.44", features = ["serde"] }
 dioxus = { version = "0.7.3", features = ["fullstack", "logger", "router"] }
-gloo-timers = "0.3"
+gloo-timers = "0.4"
 
 surrealdb = { version = "3", features = ["protocol-ws"], optional = true }
 tokio     = { version = "1", features = ["sync"],        optional = true }
