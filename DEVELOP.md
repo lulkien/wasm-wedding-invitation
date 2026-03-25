@@ -126,34 +126,47 @@ Any `cargo build` or `dx serve` rerun will recompile SCSS if any file under
 
 ## Database
 
-The app uses **SQLite** via `rusqlite` with a bundled build (no system SQLite needed).
+The app uses **SurrealDB** as an external server process, connected over WebSocket
+from the Dioxus server binary. See [SURREALDB.md](SURREALDB.md) for the full
+native installation and deployment guide.
 
-### Path
+### Connection constants
 
-| Build | Path |
-|---|---|
-| Debug (`cargo build`) | hardcoded in `src/database/mod.rs` — change to your local absolute path |
-| Release (`cargo build --release`) | `/srv/wedding/database.db` |
+All connection details live in `src/database/mod.rs` under `#[cfg(feature = "server")]`:
 
-> **Note:** The debug path is an absolute path in `database/mod.rs`. Update
-> `DATABASE_PATH` for `#[cfg(debug_assertions)]` to match your machine before running.
+| Constant | Default | Description |
+|---|---|---|
+| `DB_URL` | `ws://127.0.0.1:8000` | WebSocket URL of the SurrealDB instance |
+| `DB_NS` | `wedding` | Namespace |
+| `DB_NAME` | `wedding` | Database name |
+| `DB_USER` | `root` | Username |
+| `DB_PASS` | `secret` | Password |
+
+The connection is initialised lazily on first use via `tokio::sync::OnceCell` — no
+explicit startup step required.
+
+### Start SurrealDB (development)
+
+```sh
+surreal start --user root --password secret --bind 127.0.0.1:8000 memory
+```
 
 ### Schema
 
-```sql
-CREATE TABLE people (
-    uid      TEXT PRIMARY KEY,   -- 8-char lowercase hex, e.g. "a1b2c3d4"
-    name     TEXT NOT NULL,
-    greeting TEXT NOT NULL,      -- e.g. "Dear", "My dearest"
-    line1    TEXT NOT NULL,
-    line2    TEXT,
-    line3    TEXT
-);
+Run once against a fresh instance:
 
-CREATE TABLE location (
-    uid         TEXT PRIMARY KEY REFERENCES people(uid),
-    depart_from INTEGER NOT NULL DEFAULT 0
-);
+```sql
+DEFINE TABLE person SCHEMAFULL;
+
+DEFINE FIELD uid          ON person TYPE string ASSERT $value != NONE;
+DEFINE FIELD name         ON person TYPE string;
+DEFINE FIELD greeting     ON person TYPE string;
+DEFINE FIELD line1        ON person TYPE string;
+DEFINE FIELD line2        ON person TYPE option<string>;
+DEFINE FIELD line3        ON person TYPE option<string>;
+DEFINE FIELD depart_from  ON person TYPE int DEFAULT 0;
+
+DEFINE INDEX idx_person_uid ON person FIELDS uid UNIQUE;
 ```
 
 ### `depart_from` values
@@ -167,31 +180,6 @@ CREATE TABLE location (
 | `4` | Own vehicle |
 | `5` | Can't attend |
 
-### Create the database
-
-```sh
-sqlite3 database.db < schema.sql
-```
-
-Or manually:
-
-```sh
-sqlite3 database.db "
-CREATE TABLE people (
-    uid TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    greeting TEXT NOT NULL,
-    line1 TEXT NOT NULL,
-    line2 TEXT,
-    line3 TEXT
-);
-CREATE TABLE location (
-    uid TEXT PRIMARY KEY REFERENCES people(uid),
-    depart_from INTEGER NOT NULL DEFAULT 0
-);
-"
-```
-
 ### Add a guest
 
 Each guest gets a unique 8-character hex UID. Generate one with:
@@ -201,20 +189,18 @@ openssl rand -hex 4
 # e.g. a1b2c3d4
 ```
 
-Then insert:
+Then insert via the SurrealDB CLI:
 
 ```sql
-INSERT INTO people (uid, name, greeting, line1, line2, line3)
-VALUES (
-    'a1b2c3d4',
-    'Nguyen Van A',
-    'Dear',
-    'We joyfully invite you to share in the celebration of our wedding.',
-    'Your presence would mean the world to us.',
-    NULL
-);
-
-INSERT INTO location (uid, depart_from) VALUES ('a1b2c3d4', 0);
+CREATE person CONTENT {
+    uid:         "a1b2c3d4",
+    name:        "Nguyen Van A",
+    greeting:    "Dear",
+    line1:       "We joyfully invite you to share in the celebration of our wedding.",
+    line2:       "Your presence would mean the world to us.",
+    line3:       NONE,
+    depart_from: 0
+};
 ```
 
 The guest's unique invitation URL is:
