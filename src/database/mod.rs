@@ -110,7 +110,9 @@ mod server {
         uid.len() == 8 && uid.chars().all(|c| c.is_ascii_hexdigit())
     }
 
-    /// Row returned by SurrealDB — depart_from is stored as an integer.
+    /// Row returned by SurrealDB.
+    /// depart_from is resolved from the record link (location_map:N)
+    /// to its location_id integer via a field traversal in the query.
     #[derive(SurrealValue)]
     struct PersonRow {
         uid: String,
@@ -119,7 +121,9 @@ mod server {
         line1: String,
         line2: Option<String>,
         line3: Option<String>,
-        depart_from: i64,
+        /// None  → depart_from was NONE in DB  → DepartLocation::None
+        /// Some(N) → location_map:N was linked → DepartLocation::try_from(N)
+        depart_from: Option<i64>,
     }
 
     pub async fn query_user(uid: &str) -> Option<Person> {
@@ -132,8 +136,13 @@ mod server {
 
         let mut response = db
             .query(
-                "SELECT uid, name, greeting, line1, line2, line3, depart_from \
-                 FROM person WHERE uid = $uid",
+                // Traverse the record link so we get the plain integer back.
+                // depart_from is option<record<location_map>>, so
+                // depart_from.location_id returns NONE when unset or the
+                // integer id (1-5) when a location is linked.
+                "SELECT uid, name, greeting, line1, line2, line3, \
+                        depart_from.location_id AS depart_from \
+                 FROM people WHERE uid = $uid",
             )
             .bind(("uid", uid.to_string()))
             .await
@@ -152,7 +161,9 @@ mod server {
             line1: r.line1,
             line2: r.line2,
             line3: r.line3,
-            depart_from: DepartLocation::try_from(r.depart_from).unwrap_or_default(),
+            // None (NONE in DB) maps to DepartLocation::None (0)
+            depart_from: DepartLocation::try_from(r.depart_from.unwrap_or(0))
+                .unwrap_or_default(),
         })
     }
 
@@ -164,9 +175,20 @@ mod server {
 
         let db = get_db().await;
 
-        db.query("UPDATE person SET depart_from = $depart_from WHERE uid = $uid")
+        // DepartLocation::None (0) clears the link; any other value sets it
+        // to the corresponding location_map record (location_map:N).
+        let query = if location == DepartLocation::None {
+            "UPDATE people SET depart_from = NONE WHERE uid = $uid"
+                .to_string()
+        } else {
+            format!(
+                "UPDATE people SET depart_from = type::thing('location_map', {}) WHERE uid = $uid",
+                location as i64
+            )
+        };
+
+        db.query(query)
             .bind(("uid", uid.to_string()))
-            .bind(("depart_from", location as i64))
             .await?;
 
         info!("Updated depart_from for uid={uid} to {}", location as i64);

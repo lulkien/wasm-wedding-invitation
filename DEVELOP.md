@@ -156,29 +156,42 @@ surreal start --user root --password secret --bind 127.0.0.1:8000 memory
 Run once against a fresh instance:
 
 ```sql
-DEFINE TABLE person SCHEMAFULL;
+-- Departure location lookup
+DEFINE TABLE location_map SCHEMAFULL;
+DEFINE FIELD location_id   ON location_map TYPE int;
+DEFINE FIELD location_name ON location_map TYPE string;
 
-DEFINE FIELD uid          ON person TYPE string ASSERT $value != NONE;
-DEFINE FIELD name         ON person TYPE string;
-DEFINE FIELD greeting     ON person TYPE string;
-DEFINE FIELD line1        ON person TYPE string;
-DEFINE FIELD line2        ON person TYPE option<string>;
-DEFINE FIELD line3        ON person TYPE option<string>;
-DEFINE FIELD depart_from  ON person TYPE int DEFAULT 0;
+CREATE location_map:1 SET location_id = 1, location_name = 'FPT Tower';
+CREATE location_map:2 SET location_id = 2, location_name = 'Handico Tower';
+CREATE location_map:3 SET location_id = 3, location_name = 'Lotte Mall West Lake';
+CREATE location_map:4 SET location_id = 4, location_name = 'I use my own vehicle';
+CREATE location_map:5 SET location_id = 5, location_name = 'I\'ll pass';
 
-DEFINE INDEX idx_person_uid ON person FIELDS uid UNIQUE;
+-- Guest table
+DEFINE TABLE people SCHEMAFULL;
+DEFINE FIELD uid          ON people TYPE string ASSERT $value != NONE;
+DEFINE FIELD name         ON people TYPE string;
+DEFINE FIELD greeting     ON people TYPE string;
+DEFINE FIELD line1        ON people TYPE string;
+DEFINE FIELD line2        ON people TYPE option<string>;
+DEFINE FIELD line3        ON people TYPE option<string>;
+DEFINE FIELD desc         ON people TYPE option<string>;
+DEFINE FIELD depart_from  ON people TYPE option<record<location_map>>;
 ```
 
-### `depart_from` values
+### `depart_from` record links
 
-| Value | Meaning |
-|---|---|
-| `0` | Not decided yet (default) |
-| `1` | FPT Tower shuttle |
-| `2` | Handico Tower shuttle |
-| `3` | Lotte Mall West Lake shuttle |
-| `4` | Own vehicle |
-| `5` | Can't attend |
+`depart_from` is a SurrealDB record link to `location_map`, not a plain integer.
+`NONE` means the guest has not yet chosen a departure point.
+
+| Record | `location_id` | Meaning |
+|---|---|---|
+| `NONE` | — | Not decided yet (default) |
+| `location_map:1` | `1` | FPT Tower shuttle |
+| `location_map:2` | `2` | Handico Tower shuttle |
+| `location_map:3` | `3` | Lotte Mall West Lake shuttle |
+| `location_map:4` | `4` | Own vehicle |
+| `location_map:5` | `5` | Can't attend |
 
 ### Add a guest
 
@@ -189,17 +202,18 @@ openssl rand -hex 4
 # e.g. a1b2c3d4
 ```
 
-Then insert via the SurrealDB CLI:
+Then insert via the SurrealDB CLI (record key = uid):
 
 ```sql
-CREATE person CONTENT {
+CREATE people:a1b2c3d4 CONTENT {
     uid:         "a1b2c3d4",
     name:        "Nguyen Van A",
     greeting:    "Dear",
     line1:       "We joyfully invite you to share in the celebration of our wedding.",
     line2:       "Your presence would mean the world to us.",
     line3:       NONE,
-    depart_from: 0
+    desc:        "optional internal note",
+    depart_from: NONE
 };
 ```
 
