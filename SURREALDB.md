@@ -66,7 +66,7 @@ surreal start \
 Create the service file:
 
 ```sh
-sudo nano /etc/systemd/system/surrealdb.service
+sudo vim /etc/systemd/system/surrealdb.service
 ```
 
 Paste:
@@ -119,8 +119,8 @@ surreal sql \
   --conn ws://127.0.0.1:8000 \
   --user root \
   --password secret \
-  --ns wedding \
-  --db wedding
+  --default-namespace wedding \
+  --default-database wedding
 ```
 
 Run the schema DDL:
@@ -207,7 +207,7 @@ The Rust database module (`src/database/mod.rs`) reads these constants:
 
 | Constant | Default | Description |
 |---|---|---|
-| `DB_URL` | `ws://127.0.0.1:8000` | WebSocket URL of the SurrealDB instance |
+| `DB_URL` | `127.0.0.1:8000` | WebSocket URL of the SurrealDB instance |
 | `DB_NS` | `wedding` | Namespace |
 | `DB_NAME` | `wedding` | Database name |
 | `DB_USER` | `root` | Root username |

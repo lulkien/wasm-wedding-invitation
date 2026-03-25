@@ -8,7 +8,7 @@ A personalised, fullstack wedding invitation web app built with [Dioxus 0.7](htt
 
 - **Personalised invitations** — each guest link (`/invitation/:uid`) shows a custom greeting
 - **Live countdown** — ticks down to the ceremony in days, hours, minutes, seconds
-- **RSVP** — guests select a shuttle departure point; the choice is persisted to a SQLite database
+- **RSVP** — guests select a shuttle departure point; the choice is persisted to a SurrealDB database
 - **Zalo group links** — QR codes and links appear based on the chosen shuttle stop
 - **Fully static config** — ceremony details, venue, and couple names live in a single JSON file; no code changes needed
 - **SCSS pipeline** — styles are authored in SCSS and compiled to CSS at build time via `build.rs`
@@ -22,7 +22,7 @@ A personalised, fullstack wedding invitation web app built with [Dioxus 0.7](htt
 | UI framework | [Dioxus 0.7](https://dioxuslabs.com) (fullstack, WASM) |
 | Language | Rust |
 | Styling | SCSS → CSS via [`sass-rs`](https://crates.io/crates/sass-rs) |
-| Database | SQLite via [`rusqlite`](https://crates.io/crates/rusqlite) (bundled) |
+| Database | SurrealDB via [`surrealdb`](https://crates.io/crates/surrealdb) (bundled) |
 | Routing | Dioxus Router |
 | Async timers | [`gloo-timers`](https://crates.io/crates/gloo-timers) |
 | Browser open | [`webbrowser`](https://crates.io/crates/webbrowser) |
@@ -105,28 +105,9 @@ See [`config/README.md`](config/README.md) for a full field reference.
 
 ## Database
 
-Guest data is stored in a SQLite database with three tables:
+Guest data is stored in a SurrealDB database. For schema details, see `SURREALDB.md`
 
-```sql
-CREATE TABLE people (
-    uid     TEXT NOT NULL UNIQUE PRIMARY KEY,
-    greeting TEXT NOT NULL,
-    name    TEXT NOT NULL,
-    line1   TEXT NOT NULL,
-    line2   TEXT,
-    line3   TEXT,
-    desc    TEXT
-);
-
-CREATE TABLE location_map (
-    location_id  INTEGER NOT NULL UNIQUE PRIMARY KEY,
-    location_name TEXT NOT NULL
-);
-
-CREATE TABLE location (
-    uid TEXT NOT NULL UNIQUE PRIMARY KEY,
-    depart_from INTEGER
-);
+Refer to `SURREALDB.md` for the full schema definition.
 ```
 
 Each guest's unique invitation URL is `/invitation/<uid>` where `uid` is the 8-character hex key from the `people` table.

@@ -71,7 +71,7 @@ wasm-wedding-invitation/
 │   ├── main.rs                 ← app entry point
 │   ├── config.rs               ← loads wedding.json at compile time
 │   ├── database/
-│   │   └── mod.rs              ← SQLite queries (server-only)
+│   │   └── mod.rs              ← SurrealDB queries (server-only)
 │   ├── components/
 │   │   ├── hero.rs             ← hero + live countdown
 │   │   ├── navigation_bar.rs   ← sticky top nav
